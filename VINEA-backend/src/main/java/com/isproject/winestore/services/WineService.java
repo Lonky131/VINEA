@@ -46,5 +46,11 @@ public class WineService {
     }
 
 
+    public List<Wine> getWinesByName(String name) {
+        return wineRepo.getWinesByName(name);
+    }
 
+    public List<Wine> getWinesByColor(String color) {
+        return wineRepo.getWinesByColor(color);
+    }
 }

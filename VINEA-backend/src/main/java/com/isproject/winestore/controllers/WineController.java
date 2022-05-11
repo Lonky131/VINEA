@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -28,10 +29,22 @@ public class WineController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Wine>> getWines() {
+    public ResponseEntity<List<Wine>> getWines(
+            @RequestParam(required = false) Optional<String> name,
+            @RequestParam(required = false) Optional<String> color) {
         logger.info("Fetching all wines");
-        return new ResponseEntity<List<Wine>>(wineService.getWines(), HttpStatus.OK);
+
+        List<Wine> wines;
+        if (name.isPresent()) {
+            wines = wineService.getWinesByName(name.get());
+        } else if (color.isPresent()) {
+            wines = wineService.getWinesByColor(color.get());
+        } else {
+            wines = wineService.getWines();
+        }
+        return new ResponseEntity<List<Wine>>(wines, HttpStatus.OK);
     }
+
 
     @GetMapping(value = "/{wineId}")
     public ResponseEntity<WineDTO> getWine(@PathVariable Long wineId) {
