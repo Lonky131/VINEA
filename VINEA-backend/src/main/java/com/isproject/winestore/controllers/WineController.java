@@ -1,6 +1,7 @@
 package com.isproject.winestore.controllers;
 
 import com.isproject.winestore.dto.wine.WineDTO;
+import com.isproject.winestore.models.Wine;
 import com.isproject.winestore.services.WineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller
-@RequestMapping(value = "/wine", consumes = "application/json")
+@RequestMapping(value = "/wine")
 public class WineController {
 
     private final WineService wineService;
@@ -22,6 +25,12 @@ public class WineController {
     @Autowired
     public WineController(WineService wineService) {
         this.wineService = wineService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Wine>> getWines() {
+        logger.info("Fetching all wines");
+        return new ResponseEntity<List<Wine>>(wineService.getWines(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{wineId}")
