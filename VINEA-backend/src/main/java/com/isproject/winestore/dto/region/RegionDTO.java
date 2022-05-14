@@ -1,11 +1,13 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto.region;
 
-public class Category {
+import com.isproject.winestore.models.Region;
+
+public class RegionDTO {
 
     private long id;
     private String name;
 
-    public Category(long id, String name) {
+    public RegionDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -24,5 +26,9 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Region toRegionEntity() {
+        return new Region(0, name);
     }
 }

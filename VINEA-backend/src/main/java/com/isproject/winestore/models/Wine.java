@@ -1,7 +1,14 @@
 package com.isproject.winestore.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "wines")
 public class Wine {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wines_id")
+    @SequenceGenerator(name = "wines_id", sequenceName = "wines_id_seq", initialValue = 15, allocationSize = 1)
     private long id;
     private String name;
     private int productionYear;
@@ -9,11 +16,13 @@ public class Wine {
     private int volume;
     private double price;
     private String pictureUrl;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
     private Winery winery;
 
-    public Wine(long id, String name, int productionYear, double alcoholPercentage, int volume, double price,
+    public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
                 String pictureUrl, Winery winery) {
-        this.id = id;
         this.name = name;
         this.productionYear = productionYear;
         this.alcoholPercentage = alcoholPercentage;
@@ -23,13 +32,10 @@ public class Wine {
         this.winery = winery;
     }
 
-    public long getId() {
-        return id;
+    public Wine() {
+
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -79,6 +85,8 @@ public class Wine {
         this.pictureUrl = pictureUrl;
     }
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
     public Winery getWinery() {
         return winery;
     }

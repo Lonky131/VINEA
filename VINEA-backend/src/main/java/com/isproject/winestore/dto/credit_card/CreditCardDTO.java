@@ -1,6 +1,6 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto.credit_card;
 
-public class CreditCard {
+public class CreditCardDTO {
 
     private long id;
     private String name;
@@ -10,8 +10,8 @@ public class CreditCard {
     private String worthDate;
     private long userId;
 
-    public CreditCard(long id, String name, String surname, String iban, String control_number,
-                      String worthDate, long userId) {
+    public CreditCardDTO(long id, String name, String surname, String iban, String control_number,
+                         String worthDate, long userId) {
         this.id = id;
         this.name = name;
         this.surname = surname;

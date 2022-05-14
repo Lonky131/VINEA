@@ -1,7 +1,7 @@
 package com.isproject.winestore.controllers;
 
+import com.isproject.winestore.dto.wine.AddWineDTO;
 import com.isproject.winestore.dto.wine.WineDTO;
-import com.isproject.winestore.models.Wine;
 import com.isproject.winestore.services.WineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class WineController {
 
     private final WineService wineService;
-    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final static Logger logger = LoggerFactory.getLogger(WineController.class);
 
 
     @Autowired
@@ -29,12 +29,12 @@ public class WineController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Wine>> getWines(
+    public ResponseEntity<List<WineDTO>> getWines(
             @RequestParam(required = false) Optional<String> name,
             @RequestParam(required = false) Optional<String> color) {
         logger.info("Fetching all wines");
 
-        List<Wine> wines;
+        List<WineDTO> wines;
         if (name.isPresent()) {
             wines = wineService.getWinesByName(name.get());
         } else if (color.isPresent()) {
@@ -42,21 +42,21 @@ public class WineController {
         } else {
             wines = wineService.getWines();
         }
-        return new ResponseEntity<List<Wine>>(wines, HttpStatus.OK);
+        return new ResponseEntity<List<WineDTO>>(wines, HttpStatus.OK);
     }
 
 
-    @GetMapping(value = "/{wineId}")
-    public ResponseEntity<WineDTO> getWine(@PathVariable Long wineId) {
-        //info o proizvodu
-        logger.info("Fetching info about wine...");
-        wineService.fetchWineInfo(wineId);
+//    @GetMapping(value = "/{wineId}")
+//    public ResponseEntity<WineDTO> getWine(@PathVariable Long wineId) {
+//        //info o proizvodu
+//        logger.info("Fetching info about wine...");
+//        wineService.fetchWineInfo(wineId);
+//
+//        return new ResponseEntity(new WineDTO(), HttpStatus.OK);
+//    }
 
-        return new ResponseEntity(new WineDTO(), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/")
-    public ResponseEntity addWine(@RequestBody WineDTO wine) {
+    @PostMapping
+    public ResponseEntity addWine(@RequestBody AddWineDTO wine) {
         //dodat vino
         logger.info("Adding wine...");
         wineService.addWine(wine);
@@ -73,14 +73,14 @@ public class WineController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "/")
-    public ResponseEntity<WineDTO> updateWine(@RequestBody WineDTO wine) {
-        //update vina
-        logger.info("Updating wine...");
-        wineService.updatingWine(wine);
-
-        return new ResponseEntity(new WineDTO(), HttpStatus.OK);
-    }
+//    @PutMapping(value = "/")
+//    public ResponseEntity<WineDTO> updateWine(@RequestBody WineDTO wine) {
+//        //update vina
+//        logger.info("Updating wine...");
+//        wineService.updatingWine(wine);
+//
+//        return new ResponseEntity(new WineDTO(), HttpStatus.OK);
+//    }
 
     @GetMapping(value = "/new")
     public ResponseEntity newWines() {

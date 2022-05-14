@@ -1,12 +1,12 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto.product;
 
-public class Product {
+public class ProductDTO {
 
     private long id;
     private long wineId;
     private long orderId;
 
-    public Product(long id, long wineId, long orderId) {
+    public ProductDTO(long id, long wineId, long orderId) {
         this.id = id;
         this.wineId = wineId;
         this.orderId = orderId;

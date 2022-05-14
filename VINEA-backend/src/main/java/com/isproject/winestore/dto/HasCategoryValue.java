@@ -1,4 +1,4 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto;
 
 public class HasCategoryValue {
 

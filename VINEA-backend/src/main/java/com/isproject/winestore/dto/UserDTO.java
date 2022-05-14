@@ -1,8 +1,8 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto;
 
 import java.time.LocalDateTime;
 
-public class User {
+public class UserDTO {
 
     private Long id;
     private String name;
@@ -13,8 +13,8 @@ public class User {
     private LocalDateTime createdAccount;
     private boolean isAdmin;
 
-    public User(Long id, String name, String surname, String email, String password, String token,
-                LocalDateTime createdAccount, boolean isAdmin) {
+    public UserDTO(Long id, String name, String surname, String email, String password, String token,
+                   LocalDateTime createdAccount, boolean isAdmin) {
         this.id = id;
         this.name = name;
         this.surname = surname;

@@ -1,48 +1,28 @@
 package com.isproject.winestore.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "wineries")
 public class Winery {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
     private int founding_year;
-    private long region_id;
 
-    public Winery(long id, String name, int founding_year, long region_id) {
+    @ManyToOne
+    private Region region;
+
+    public Winery(long id, String name, int founding_year, Region region) {
         this.id = id;
         this.name = name;
         this.founding_year = founding_year;
-        this.region_id = region_id;
+        this.region = region;
     }
 
-    public long getId() {
-        return id;
-    }
+    public Winery() {
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getFounding_year() {
-        return founding_year;
-    }
-
-    public void setFounding_year(int founding_year) {
-        this.founding_year = founding_year;
-    }
-
-    public long getRegion_id() {
-        return region_id;
-    }
-
-    public void setRegion_id(long region_id) {
-        this.region_id = region_id;
     }
 }

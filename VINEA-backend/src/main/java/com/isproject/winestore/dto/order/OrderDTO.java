@@ -1,8 +1,8 @@
-package com.isproject.winestore.models;
+package com.isproject.winestore.dto.order;
 
 import java.time.LocalDateTime;
 
-public class Order {
+public class OrderDTO {
 
     private long id;
     private LocalDateTime dateAndTime;
@@ -10,7 +10,7 @@ public class Order {
     private String address;
     private long userId;
 
-    public Order(long id, LocalDateTime dateAndTime, double total_cost, String address, long userId) {
+    public OrderDTO(long id, LocalDateTime dateAndTime, double total_cost, String address, long userId) {
         this.id = id;
         this.dateAndTime = dateAndTime;
         this.total_cost = total_cost;
