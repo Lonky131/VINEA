@@ -48,7 +48,8 @@ public class WineRepoJdbc {
                                         new Object[] {rs.getLong("regionId")},
                                         (rs2, rowNum2) ->
                                                 new RegionDTO(
-                                                        rs2.getLong("id"), rs2.getString("name")
+                                                        rs2.getLong("id"), rs2.getString("name"),
+                                                        rs2.getString("country")
                                                 )
                                 )
                         )
@@ -89,7 +90,8 @@ public class WineRepoJdbc {
                                             new Object[] {rs.getLong("regionId")},
                                             (rs2, rowNum2) ->
                                                     new RegionDTO(
-                                                            rs2.getLong("id"), rs2.getString("name")
+                                                            rs2.getLong("id"), rs2.getString("name"),
+                                                            rs2.getString("country")
                                                     )
                                     )
                             )
@@ -141,7 +143,8 @@ public class WineRepoJdbc {
                                             new Object[] {rs.getLong("regionId")},
                                             (rs2, rowNum2) ->
                                                     new RegionDTO(
-                                                            rs2.getLong("id"), rs2.getString("name")
+                                                            rs2.getLong("id"), rs2.getString("name"),
+                                                            rs2.getString("country")
                                                     )
                                     )
                             )

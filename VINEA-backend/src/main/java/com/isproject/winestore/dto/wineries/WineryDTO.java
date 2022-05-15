@@ -50,6 +50,6 @@ public class WineryDTO {
     }
 
     public Winery toWineryEntity() {
-        return new Winery(0, name, founding_year, region.toRegionEntity());
+        return new Winery(name, founding_year, region.toRegionEntity());
     }
 }

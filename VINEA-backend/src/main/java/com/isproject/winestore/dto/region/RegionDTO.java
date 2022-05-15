@@ -6,10 +6,12 @@ public class RegionDTO {
 
     private long id;
     private String name;
+    private String country;
 
-    public RegionDTO(long id, String name) {
+    public RegionDTO(long id, String name, String country) {
         this.id = id;
         this.name = name;
+        this.country = country;
     }
 
     public long getId() {
@@ -29,6 +31,6 @@ public class RegionDTO {
     }
 
     public Region toRegionEntity() {
-        return new Region(0, name);
+        return new Region(name, country);
     }
 }

@@ -1,8 +1,7 @@
 package com.isproject.winestore.dto.credit_card;
 
-public class CreditCardDTO {
+public class AddCreditCardDTO {
 
-    private long id;
     private String name;
     private String surname;
     private String iban;
@@ -10,23 +9,14 @@ public class CreditCardDTO {
     private String worthDate;
     private long userId;
 
-    public CreditCardDTO(long id, String name, String surname, String iban, String controlNumber,
+    public AddCreditCardDTO(String name, String surname, String iban, String controlNumber,
                          String worthDate, long userId) {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.iban = iban;
         this.controlNumber = controlNumber;
         this.worthDate = worthDate;
         this.userId = userId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
