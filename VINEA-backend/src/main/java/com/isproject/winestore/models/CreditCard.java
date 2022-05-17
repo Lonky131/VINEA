@@ -3,7 +3,6 @@ package com.isproject.winestore.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "credit_cards")
 public class CreditCard {
 
     @Id

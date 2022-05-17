@@ -3,7 +3,6 @@ package com.isproject.winestore.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "regions")
 public class Region {
 
     @Id

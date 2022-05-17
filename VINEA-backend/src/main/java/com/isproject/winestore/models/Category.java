@@ -1,9 +1,10 @@
 package com.isproject.winestore.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "categories")
 public class Category {
 
     @Id
@@ -11,6 +12,9 @@ public class Category {
     @SequenceGenerator(name = "category_id", sequenceName = "categories_id_seq", initialValue = 4, allocationSize = 1)
     private long id;
     private String name;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WineCategory> categories = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;

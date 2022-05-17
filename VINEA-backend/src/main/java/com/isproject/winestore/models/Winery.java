@@ -3,11 +3,10 @@ package com.isproject.winestore.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "wineries")
 public class Winery {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "winery_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wineries_id")
     @SequenceGenerator(name = "wineries_id", sequenceName = "wineries_id_seq", initialValue = 5, allocationSize = 1)
     private long id;
     private String name;

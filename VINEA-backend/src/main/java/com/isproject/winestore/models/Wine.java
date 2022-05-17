@@ -1,9 +1,10 @@
 package com.isproject.winestore.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "wines")
 public class Wine {
 
     @Id
@@ -21,6 +22,9 @@ public class Wine {
     @JoinColumn(referencedColumnName = "id")
     private Winery winery;
 
+    @OneToMany(mappedBy = "wine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WineCategory> categories = new ArrayList<>();
+
     public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
                 String pictureUrl, Winery winery) {
         this.name = name;
@@ -36,6 +40,13 @@ public class Wine {
 
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -94,4 +105,6 @@ public class Wine {
     public void setWinery(Winery winery) {
         this.winery = winery;
     }
+
+
 }
