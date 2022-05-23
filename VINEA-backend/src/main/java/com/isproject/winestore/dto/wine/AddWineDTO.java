@@ -1,5 +1,7 @@
 package com.isproject.winestore.dto.wine;
 
+import java.util.List;
+
 public class AddWineDTO {
 
     private String name;
@@ -10,8 +12,10 @@ public class AddWineDTO {
     private String pictureUrl;
     private long wineryId;
 
+    private List<AddWineCategoryDTO> categories;
+
     public AddWineDTO(String name, int productionYear, double alcoholPercentage, int volume,
-                      double price, String pictureUrl, long wineryId) {
+                      double price, String pictureUrl, long wineryId, List<AddWineCategoryDTO> addWineCategoriesDTO) {
         this.name = name;
         this.productionYear = productionYear;
         this.alcoholPercentage = alcoholPercentage;
@@ -19,6 +23,7 @@ public class AddWineDTO {
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.wineryId = wineryId;
+        this.categories = addWineCategoriesDTO;
     }
 
     public String getName() {
@@ -47,5 +52,13 @@ public class AddWineDTO {
 
     public long getWineryId() {
         return wineryId;
+    }
+
+    public List<AddWineCategoryDTO> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<AddWineCategoryDTO> categories) {
+        this.categories = categories;
     }
 }

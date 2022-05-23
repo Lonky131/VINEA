@@ -25,6 +25,11 @@ public class WineCategory {
         this.value = value;
     }
 
+    public WineCategory(Category category, String value) {
+        this.category = category;
+        this.value = value;
+    }
+
     public WineCategory() {
 
     }

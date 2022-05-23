@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -33,35 +32,41 @@ public class WineController {
         this.wineService = wineService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<WineDTO>> getWines(
-            @RequestParam(required = false) Optional<String> name,
-            @RequestParam(required = false) Optional<String> color,
-            @RequestParam(required = false) Optional<String> type,
-            @RequestParam(required = false) Optional<String> sweetness,
-            @RequestParam(required = false) Optional<String>[] wineries) {
+//    @GetMapping
+//    public ResponseEntity<List<WineDTO>> getWines(
+//            @RequestParam(required = false) Optional<String> name,
+//            @RequestParam(required = false) Optional<String> color,
+//            @RequestParam(required = false) Optional<String> type,
+//            @RequestParam(required = false) Optional<String> sweetness,
+//            @RequestParam(required = false) Optional<String>[] wineries) {
+//
+//        logger.info("Fetching all wines");
+//        List<WineDTO> wines;
+//        if (name.isPresent()) {
+//            wines = wineService.getWinesByName(name.get());
+//        } else if (color.isPresent()) {
+//            wines = wineService.getWinesByColor(color.get());
+//        } else {
+//            wines = wineService.getWines();
+//        }
+//        return new ResponseEntity<List<WineDTO>>(wines, HttpStatus.OK);
+//    }
 
-        logger.info("Fetching all wines");
-        List<WineDTO> wines;
-        if (name.isPresent()) {
-            wines = wineService.getWinesByName(name.get());
-        } else if (color.isPresent()) {
-            wines = wineService.getWinesByColor(color.get());
-        } else {
-            wines = wineService.getWines();
-        }
-        return new ResponseEntity<List<WineDTO>>(wines, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<Wine>> getAllWines() {
+        logger.info("Fetching all wines...");
+        return new ResponseEntity<List<Wine>>(wineService.getWines(), HttpStatus.OK);
     }
 
 
-//    @GetMapping(value = "/{wineId}")
-//    public ResponseEntity<WineDTO> getWine(@PathVariable Long wineId) {
-//        //info o proizvodu
-//        logger.info("Fetching info about wine...");
-//        wineService.fetchWineInfo(wineId);
-//
-//        return new ResponseEntity(new WineDTO(), HttpStatus.OK);
-//    }
+    @GetMapping(value = "/{wineId}")
+    public ResponseEntity<WineDTO> getWine(@PathVariable Long wineId) {
+        //info o proizvodu
+        logger.info("Fetching info about wine...");
+        wineService.fetchWineInfo(wineId);
+
+        return new ResponseEntity(wineService.fetchWineInfo(wineId), HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity addWine(@RequestBody AddWineDTO wine) {
@@ -75,13 +80,13 @@ public class WineController {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(value = "/{wineId}")
+    @PostMapping(value = "/add-category/{wineId}")
     public ResponseEntity addCategoryToWine(@RequestParam(required = true) long categoryId,
                                             @RequestParam(required = true) String value,
                                             @PathVariable long wineId) {
         logger.info("Adding value " + value + " of category " + categoryId + " to wine " + wineId + "...");
         wineService.addCategoryToWine(wineId, categoryId, value);
-        return null;
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{wineId}")

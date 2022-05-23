@@ -1,15 +1,18 @@
 package com.isproject.winestore.services;
 
+import com.isproject.winestore.dto.wine.AddWineCategoryDTO;
 import com.isproject.winestore.dto.wine.AddWineDTO;
 import com.isproject.winestore.dto.wine.PutWineDTO;
 import com.isproject.winestore.dto.wine.WineDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Category;
 import com.isproject.winestore.models.Wine;
+import com.isproject.winestore.models.WineCategory;
 import com.isproject.winestore.models.Winery;
 import com.isproject.winestore.repos.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +35,16 @@ public class WineService {
     }
 
 
-    public List<WineDTO> getWines() {
-        return wineRepoJdbc.getWines();
+    public List<Wine> getWines() {
+        return wineRepoJPA.findAll();
     }
 
-    public void fetchWineInfo(long wineId) {
-
+    public Wine fetchWineInfo(long wineId) {
+        Optional<Wine> wine = wineRepoJPA.findById(wineId);
+        if (wine.isEmpty()) {
+            throw new IdNotExistingException("Wine id does not exist!");
+        }
+        return wine.get();
     }
 
     public Wine addWine(AddWineDTO wine) {
@@ -45,9 +52,32 @@ public class WineService {
         if (wineryEntity.isEmpty()) {
             throw new IdNotExistingException("Winery id not existing!");
         }
+        List<WineCategory> wineCategories = new ArrayList<>();
+        for (AddWineCategoryDTO addWineCategoryDTO: wine.getCategories()) {
+            Optional<Category> category = categoryRepoJPA.findById(addWineCategoryDTO.getCategoryId());
+            if (category.isEmpty()) {
+                throw new IdNotExistingException("Category id " + addWineCategoryDTO.getCategoryId() +
+                        " does not exist!");
+            }
+            wineCategories.add(new WineCategory(category.get(), addWineCategoryDTO.getValue()));
+//            wineCategoryRepoJPA.saveAndFlush(new WineCategory(category.get(), savedWineEntity,
+//                    addWineCategoryDTO.getValue()));
+        }
         Wine wineEntity = new Wine(wine.getName(), wine.getProductionYear(), wine.getAlcoholPercentage(),
-                wine.getVolume(), wine.getPrice(), wine.getPictureUrl(), wineryEntity.get());
-        return wineRepoJPA.saveAndFlush(wineEntity);
+                wine.getVolume(), wine.getPrice(), wine.getPictureUrl(), wineryEntity.get(), wineCategories);
+        Wine savedWineEntity = wineRepoJPA.saveAndFlush(wineEntity);
+//        List<WineCategory> wineCategories = new ArrayList<>();
+//        for (AddWineCategoryDTO addWineCategoryDTO: wine.getCategories()) {
+//            Optional<Category> category = categoryRepoJPA.findById(addWineCategoryDTO.getCategoryId());
+//            if (category.isEmpty()) {
+//                throw new IdNotExistingException("Category id " + addWineCategoryDTO.getCategoryId() +
+//                        " does not exist!");
+//            }
+//            wineCategories.add(new WineCategory(category.get(), addWineCategoryDTO.getValue()));
+////            wineCategoryRepoJPA.saveAndFlush(new WineCategory(category.get(), savedWineEntity,
+////                    addWineCategoryDTO.getValue()));
+//        }
+        return savedWineEntity;
     }
 
     public void deleteWine(long wineId) {
@@ -95,15 +125,16 @@ public class WineService {
     }
 
     public void addCategoryToWine(long wineId, long categoryId, String value) {
-        Optional<Wine> wine = wineRepoJPA.findById(wineId);
-        if (wine.isEmpty()) {
-            throw new IdNotExistingException("Wine id does not exist!");
-        }
         Optional<Category> category = categoryRepoJPA.findById(categoryId);
         if (category.isEmpty()) {
             throw new IdNotExistingException("Category id does not exist!");
         }
-
+        Optional<Wine> wine = wineRepoJPA.findById(wineId);
+        if (wine.isEmpty()) {
+            throw new IdNotExistingException("Wine id does not exist!");
+        }
+        WineCategory wineCategory = new WineCategory(category.get(), wine.get(), value);
+        wineCategoryRepoJPA.saveAndFlush(wineCategory);
 
     }
 }

@@ -1,21 +1,15 @@
 version: "3"
 
-# docker run --rm --name courses-database -v courses-data:/var/lib/postgresql/data -p 5432:5432
-# -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=courses-db -d postgres:13-alpine
-# psql -h localhost -p 5433 -d cars-db  -U admin
-
-# create table if not exists checkups (id bigserial primary key, timeAndDate varchar(25), workerName varchar(25), price decimal(8,2), carId bigint);
-# create table if not exists cars (id bigserial primary key, addedDate varchar(15), manufacturer varchar(25), productionYear integer, serialNumber varchar(20));
 services:
   winestore-database:
     image: "postgres:14.2-alpine"
     ports:
-      - "5433:5432"
+      - "5433:5432" # isto možeš staviti 5432:5432
     volumes:
-      - "winestore-db-data:/var/lib/postgresql/data"
+      - "winestore-db-data:/var/lib/postgresql/data"   # ovdje se spremaju podaci (valjda)
     environment:
-      - "POSTGRES_USER=admin"
-      - "POSTGRES_PASSWORD=admin"
-      - "POSTGRES_DB=winestore-db"
+      - "POSTGRES_USER=admin"      # admin ime
+      - "POSTGRES_PASSWORD=admin"   # admin lozinka
+      - "POSTGRES_DB=winestore-db"  # ime db
 volumes:
   winestore-db-data:

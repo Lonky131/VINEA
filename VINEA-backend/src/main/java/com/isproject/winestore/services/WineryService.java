@@ -1,6 +1,7 @@
 package com.isproject.winestore.services;
 
 import com.isproject.winestore.dto.wineries.AddWineryDTO;
+import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
 import com.isproject.winestore.models.Winery;
 import com.isproject.winestore.repos.RegionRepoJPA;
@@ -8,6 +9,7 @@ import com.isproject.winestore.repos.WineryRepoJPA;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WineryService {
@@ -21,13 +23,18 @@ public class WineryService {
     }
     
     public Winery getWineryById(long id) {
-        return wineryRepoJPA.getById(id);
+        Optional<Winery> winery = wineryRepoJPA.findById(id);
+        if (winery.isEmpty())
+            throw new IdNotExistingException("Winery id does not exist!");
+        return winery.get();
     }
 
     public Winery addWinery(AddWineryDTO winery) {
-        Region regionEntity = regionRepoJPA.getById(winery.getRegionId());
+        Optional<Region> regionEntity = regionRepoJPA.findById(winery.getRegionId());
+        if (regionEntity.isEmpty())
+            throw new IdNotExistingException("Winery id does not exist!");
         return wineryRepoJPA.saveAndFlush(
-                new Winery(winery.getName(), winery.getFoundingYear(), regionEntity));
+                new Winery(winery.getName(), winery.getFoundingYear(), regionEntity.get()));
     }
 
     public List<Winery> getAllWineries() {

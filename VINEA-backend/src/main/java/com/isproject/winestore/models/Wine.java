@@ -1,7 +1,6 @@
 package com.isproject.winestore.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +22,7 @@ public class Wine {
     private Winery winery;
 
     @OneToMany(mappedBy = "wine", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WineCategory> categories = new ArrayList<>();
+    private List<WineCategory> categories;
 
     public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
                 String pictureUrl, Winery winery) {
@@ -34,6 +33,20 @@ public class Wine {
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.winery = winery;
+    }
+
+    public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
+                String pictureUrl, Winery winery, List<WineCategory> categories) {
+        this.name = name;
+        this.productionYear = productionYear;
+        this.alcoholPercentage = alcoholPercentage;
+        this.volume = volume;
+        this.price = price;
+        this.pictureUrl = pictureUrl;
+        this.winery = winery;
+        for(WineCategory wineCategory : categories)
+            wineCategory.setWine(this);
+        this.categories = categories;
     }
 
     public Wine() {
