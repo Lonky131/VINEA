@@ -1,0 +1,4 @@
+- total cost u orderu bi se trebo zbrojit sam iz svih artikla unutra
+- kreditnoj kartici maknut poveznicu s userom jer bzvz komplicira
+- id kao bigserial u productu moguća mina za ocjenjivanje
+- address kao posebni entitet
