@@ -14,6 +14,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<WineCategory> categories = new ArrayList<>();
 
     public Category(String name) {
