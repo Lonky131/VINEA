@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  winestore-database:
+    image: "postgres:14.2-alpine"
+    ports:
+      - "5433:5432" # isto možeš staviti 5432:5432
+    volumes:
+      - "winestore-db-data:/var/lib/postgresql/data"   # ovdje se spremaju podaci (valjda)
+    environment:
+      - "POSTGRES_USER=admin"      # admin ime
+      - "POSTGRES_PASSWORD=admin"   # admin lozinka
+      - "POSTGRES_DB=winestore-db"  # ime db
+volumes:
+  winestore-db-data:
