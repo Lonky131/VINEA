@@ -80,12 +80,14 @@ public class WineService {
         return savedWineEntity;
     }
 
-    public void deleteWine(long wineId) {
+
+    public boolean deleteWine(long wineId) {
         Optional<Wine> wine = wineRepoJPA.findById(wineId);
         if (wine.isEmpty()) {
             throw new IdNotExistingException("Wine id does not exist!");
         }
         wineRepoJPA.deleteById(wineId);
+        return true;
     }
 
     public void fetchNewestWines() {
@@ -124,7 +126,8 @@ public class WineService {
         return wineRepoJPA.saveAndFlush(wineEntity1);
     }
 
-    public void addCategoryToWine(long wineId, long categoryId, String value) {
+
+    public boolean addCategoryToWine(long wineId, long categoryId, String value) {
         Optional<Category> category = categoryRepoJPA.findById(categoryId);
         if (category.isEmpty()) {
             throw new IdNotExistingException("Category id does not exist!");
@@ -136,5 +139,6 @@ public class WineService {
         WineCategory wineCategory = new WineCategory(category.get(), wine.get(), value);
         wineCategoryRepoJPA.saveAndFlush(wineCategory);
 
+        return true;
     }
 }
