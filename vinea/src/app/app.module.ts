@@ -28,6 +28,8 @@ import {MatPaginatorModule } from '@angular/material/paginator';
 import {MatTableModule } from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 
+//Services
+import {WineService} from './services/wine.service'
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import {MatSortModule} from '@angular/material/sort';
     NotfoundComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
     MatPaginatorModule,
@@ -54,10 +57,9 @@ import {MatSortModule} from '@angular/material/sort';
     MatCardModule,
     MatMenuModule,
     FlexLayoutModule,
-    HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [WineService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

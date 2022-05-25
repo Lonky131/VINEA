@@ -6,7 +6,7 @@
             Welcome Karlo!
         </mat-card-title>
         <mat-card-content>
-            <p>Tu ce bit neki welcome message            </p>
+            <p>Tu ce bit neki welcome message       </p>
         </mat-card-content>
 
 
@@ -42,7 +42,7 @@
       <mat-card>
       <mat-form-field id="table-filter-input">
         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Npr. Grasevina" #input>
       </mat-form-field>
 
     <div class="mat-elevation-z8">
@@ -54,22 +54,46 @@
             <td mat-cell *matCellDef="let row"> {{row.id}} </td>
           </ng-container>
 
-          <!-- Server Name Column -->
+          <!-- Wine name -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
             <td mat-cell *matCellDef="let row"> {{row.name}} </td>
           </ng-container>
 
-          <!-- File Name Column -->
-          <ng-container matColumnDef="progress">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> progress </th>
-            <td mat-cell *matCellDef="let row"> {{row.progress}} </td>
+          <!-- Production year Column -->
+          <ng-container matColumnDef="productionYear">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Production Year </th>
+            <td mat-cell *matCellDef="let row"> {{row.productionYear}} </td>
           </ng-container>
 
-          <!-- File Size Column -->
-          <ng-container matColumnDef="fruit">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> fruit </th>
-            <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+          <!-- Alchohol percetage Column -->
+          <ng-container matColumnDef="alchoholPercentage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Alchohol Percentage </th>
+            <td mat-cell *matCellDef="let row"> {{row.alchoholPercentage}} </td>
+          </ng-container>
+
+          <!-- Volume Column -->
+          <ng-container matColumnDef="volume">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Volume </th>
+            <td mat-cell *matCellDef="let row"> {{row.volume}} </td>
+          </ng-container>
+
+          <!-- Price Column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+            <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+          </ng-container>
+
+          <!-- pictureUrl Column -->
+          <ng-container matColumnDef="pictureUrl">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> PictureUrl </th>
+            <td mat-cell *matCellDef="let row"> <img [src]="row.pictureUrl" width="50px" height="100px"/> </td>
+          </ng-container>
+
+          <!-- Winery name Column -->
+          <ng-container matColumnDef="winery">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Winery </th>
+            <td mat-cell *matCellDef="let row"> {{row.winery.name}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -77,7 +101,7 @@
 
           <!-- Row shown when there is no matching data. -->
           <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">No data matching the filter {{input.value}}</td>
+            <td class="mat-cell" colspan="8">No data matching the filter {{input.value}}</td>
           </tr>
         </table>
 
