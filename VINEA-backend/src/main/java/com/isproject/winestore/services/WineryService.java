@@ -1,6 +1,7 @@
 package com.isproject.winestore.services;
 
 import com.isproject.winestore.dto.wineries.AddWineryDTO;
+import com.isproject.winestore.dto.wineries.PutWineryDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
 import com.isproject.winestore.models.Winery;
@@ -39,5 +40,29 @@ public class WineryService {
 
     public List<Winery> getAllWineries() {
         return wineryRepoJPA.findAll();
+    }
+
+    public boolean deleteWinery(long wineryId) {
+        Optional<Winery> winery = wineryRepoJPA.findById(wineryId);
+        if (winery.isEmpty())
+            throw new IdNotExistingException("Winery id does not exist!");
+        wineryRepoJPA.deleteById(wineryId);
+        return true;
+    }
+
+    public Winery updateWinery(long wineryId, PutWineryDTO wineryDTO) {
+        Optional<Winery> wineryEntity = wineryRepoJPA.findById(wineryId);
+        if (wineryEntity.isEmpty()) {
+            throw new IdNotExistingException("Winery id does not exist!");
+        }
+        Winery winery = wineryEntity.get();
+        winery.setName(wineryDTO.getName());
+        winery.setFoundingYear(wineryDTO.getFoundingYear());
+        Optional<Region> region = regionRepoJPA.findById(wineryDTO.getRegionId());
+        if (region.isEmpty()) {
+            throw new IdNotExistingException("Region id does not exist!");
+        }
+        winery.setRegion(region.get());
+        return wineryRepoJPA.saveAndFlush(winery);
     }
 }

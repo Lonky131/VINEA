@@ -1,14 +1,25 @@
 package com.isproject.winestore.dto.wineries;
 
-public class    AddWineryDTO {
+public class PutWineryDTO {
+
+    private long id;
     private String name;
     private int foundingYear;
     private long regionId;
 
-    public AddWineryDTO(String name, int foundingYear, long regionId) {
+    public PutWineryDTO(long id, String name, int foundingYear, long regionId) {
+        this.id = id;
         this.name = name;
         this.foundingYear = foundingYear;
         this.regionId = regionId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,5 +45,4 @@ public class    AddWineryDTO {
     public void setRegionId(long regionId) {
         this.regionId = regionId;
     }
-
 }

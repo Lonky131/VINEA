@@ -1,6 +1,8 @@
 package com.isproject.winestore.controllers;
 
 import com.isproject.winestore.dto.wineries.AddWineryDTO;
+import com.isproject.winestore.dto.wineries.PutWineryDTO;
+import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Winery;
 import com.isproject.winestore.services.WineryService;
 import org.slf4j.Logger;
@@ -46,5 +48,24 @@ public class WineryController {
                 .buildAndExpand()
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping(value = "/{wineryId}")
+    public ResponseEntity<Object> deleteWinery(@PathVariable long wineryId) {
+        logger.info("Deleting winery " + wineryId + "...");
+        wineryService.deleteWinery(wineryId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(value = "/{wineryId}")
+    public ResponseEntity<Winery> updateWine(@PathVariable long wineryId, @RequestBody PutWineryDTO wineryDTO) {
+        logger.info("Updating winery with id " + wineryId + "...");
+        return new ResponseEntity<Winery>(wineryService.updateWinery(wineryId, wineryDTO), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(value = {IdNotExistingException.class})
+    public ResponseEntity<String> handleException(RuntimeException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

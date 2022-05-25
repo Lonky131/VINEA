@@ -1,6 +1,8 @@
 package com.isproject.winestore.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isproject.winestore.dto.wine.AddWineCategoryDTO;
+import com.isproject.winestore.dto.wine.AddWineDTO;
 import com.isproject.winestore.dto.wine.PutWineDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
@@ -16,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -237,5 +241,18 @@ public class WineControllerTests {
 //                        .content(objectMapper.writeValueAsString(addWineDTO)))
 //                .andExpect(status().isCreated());
 //    }
+
+    @Test
+    public void addWineSuccessfully() throws Exception {
+        AddWineDTO addWineDTO = new AddWineDTO("dost dobro vino", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
+                "05/18/17/22/leaves-7205773__480.jpg", 2, new ArrayList<AddWineCategoryDTO>());
+
+        given(wineService.addWine(addWineDTO)).willReturn(wines.get(0));
+
+        mvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addWineDTO)))
+                .andExpect(status().isCreated());
+    }
 
 }

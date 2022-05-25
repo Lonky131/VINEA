@@ -1,6 +1,7 @@
 package com.isproject.winestore.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,7 @@ public class Wine {
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.winery = winery;
+        this.categories = new ArrayList<WineCategory>();
     }
 
     public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
@@ -120,4 +122,7 @@ public class Wine {
     }
 
 
+    public void addWineCategory(WineCategory wineCategory) {
+        categories.add(wineCategory);
+    }
 }

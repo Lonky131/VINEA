@@ -1,10 +1,10 @@
 package com.isproject.winestore.controllers;
 
-import com.isproject.winestore.dto.wine.AddWineDTO;
-import com.isproject.winestore.dto.wine.PutWineDTO;
-import com.isproject.winestore.dto.wine.WineDTO;
+import com.isproject.winestore.dto.wine.*;
+import com.isproject.winestore.exceptions.DuplicateKeyIdException;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Wine;
+import com.isproject.winestore.models.WineCategory;
 import com.isproject.winestore.services.WineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 
@@ -73,19 +71,11 @@ public class WineController {
         //dodat vino
         logger.info("Adding wine...");
         Wine wineEntity = wineService.addWine(wine);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/" + wineEntity.getId())
-                .buildAndExpand()
-                .toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @PostMapping(value = "/add-category/{wineId}")
-    public ResponseEntity addCategoryToWine(@RequestParam(required = true) long categoryId,
-                                            @RequestParam(required = true) String value,
-                                            @PathVariable long wineId) {
-        logger.info("Adding value " + value + " of category " + categoryId + " to wine " + wineId + "...");
-        wineService.addCategoryToWine(wineId, categoryId, value);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/" + wineEntity.getId())
+//                .buildAndExpand()
+//                .toUri();
+//        return ResponseEntity.created(location).build();
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -103,9 +93,40 @@ public class WineController {
         return new ResponseEntity<Wine>(wineService.updateWine(id, wine), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{wineId}/categories")
+    public ResponseEntity<List<WineCategoryDTO>> getWineCategories(@PathVariable long wineId) {
+        logger.info("Fetching categories for wine " + wineId + "...");
+        return new ResponseEntity<List<WineCategoryDTO>>(wineService.getWineCategories(wineId), HttpStatus.OK);
+    }
 
-    @ExceptionHandler(value = IdNotExistingException.class)
-    public ResponseEntity<String> handleException(IdNotExistingException ex) {
+    @PostMapping(value = "/add-category/{wineId}")
+    public ResponseEntity addCategoryToWine(@RequestParam(required = true) long categoryId,
+                                            @RequestParam(required = true) String value,
+                                            @PathVariable long wineId) {
+        logger.info("Adding value " + value + " of category " + categoryId + " to wine " + wineId + "...");
+        wineService.addCategoryToWine(wineId, categoryId, value);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value = "/{wineId}/delete-category/{wineCategoryId}")
+    public ResponseEntity deleteCategoryFromWine(@PathVariable long wineId, @PathVariable long wineCategoryId) {
+        logger.info("Deleting category with value id " + wineCategoryId + " from wine " + wineId + "...");
+        wineService.deleteCategoryFromWine(wineId, wineCategoryId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{wineId}/update-category/{wineCategoryId}")
+    public ResponseEntity<WineCategory> updateWineCategory(@PathVariable long wineId,
+                                                              @PathVariable long wineCategoryId,
+                                                              @RequestBody PutWineCategoryDTO putWineCategoryDTO) {
+        logger.info("Updating wine " + wineId + "...");
+        return new ResponseEntity<WineCategory>(wineService.updateWineCategory(
+                wineId, wineCategoryId, putWineCategoryDTO), HttpStatus.OK);
+    }
+
+
+    @ExceptionHandler(value = {IdNotExistingException.class, DuplicateKeyIdException.class})
+    public ResponseEntity<String> handleException(RuntimeException ex) {
         logger.error(ex.getMessage());
         return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

@@ -1,5 +1,7 @@
 package com.isproject.winestore.models;
 
+import org.springframework.data.relational.core.mapping.Column;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,8 @@ public class Winery {
     @SequenceGenerator(name = "wineries_id", sequenceName = "wineries_id_seq", initialValue = 5, allocationSize = 1)
     private long id;
     private String name;
+
+    @Column(value = "founding_year")
     private int foundingYear;
 
     @ManyToOne
@@ -27,7 +31,7 @@ public class Winery {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "winery_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wineries_id")
     @SequenceGenerator(name = "wineries_id", sequenceName = "wineries_id_seq", initialValue = 5, allocationSize = 1)
     public long getId() {
         return id;
@@ -49,7 +53,7 @@ public class Winery {
         return foundingYear;
     }
 
-    public void setFoundingYear(int founding_year) {
+    public void setFoundingYear(int foundingYear) {
         this.foundingYear = foundingYear;
     }
 
