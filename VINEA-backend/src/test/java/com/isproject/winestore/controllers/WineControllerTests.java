@@ -1,6 +1,8 @@
 package com.isproject.winestore.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isproject.winestore.dto.wine.AddWineCategoryDTO;
+import com.isproject.winestore.dto.wine.AddWineDTO;
 import com.isproject.winestore.dto.wine.PutWineDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -195,47 +198,18 @@ public class WineControllerTests {
 
 
 
-//
-//    @Test
-//    public void addWineSuccessfully() throws Exception {
-//        List<Region> regions = Arrays.asList(
-//                new Region("dalmacija", "hrvatska"),
-//                new Region("slavonija", "hrvatska")
-//        );
-//        List<Winery> wineries = Arrays.asList(
-//                new Winery("dost dobra vinarija", 1999, regions.get(1)),
-//                new Winery("jako dobra vinarija", 1967, regions.get(0)),
-//                new Winery("dobra vinarija", 1987, regions.get(0))
-//        );
-//        List<Wine> wines = Arrays.asList(
-//                new Wine("dost dobro vino", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
-//                        "05/18/17/22/leaves-7205773__480.jpg", wineries.get(0)),
-//                new Wine("isto jako dobro vino", 2016, 15, 1500, 150, "https://cdn.pixabay.com/photo/2022/05/11/06/00" +
-//                        "/flowers-7188503__340.jpg", wineries.get(2)),
-//                new Wine("neloše vino", 2010, 13, 1200, 120.50, "https://cdn.pixabay.com/photo/2022/05/11/06/00/f" +
-//                        "lowers-7188503__340.jpg", wineries.get(1)),
-//                new Wine("solidno vino", 2010, 18, 700, 200, "https://cdn.pixabay.com/photo/2022/05/11/13/55/n" +
-//                        "ature-7189418__340.jpg", wineries.get(1)),
-//                new Wine("super vino", 1999, 14.5, 700, 300.99, "https://cdn.pixabay.com/photo/2022/04/27/07/47/bee-71" +
-//                        "59876__340.jpg", wineries.get(2))
-//        );
-//
-//        AddWineDTO addWineDTO = new AddWineDTO("dost dobro vino", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
-//                "05/18/17/22/leaves-7205773__480.jpg", 2, new ArrayList<AddWineCategoryDTO>());
-//
-//        MockHttpServletRequest request = new MockHttpServletRequest();
-//        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/1").
-//                buildAndExpand().toUri();
-//
-//        ResponseEntity<Object> response = ResponseEntity.created(location).build();
-//        given(wineService.addWine(addWineDTO)).willReturn(wines.get(0));
-//
-//        mvc.perform(post(endpoint)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(addWineDTO)))
-//                .andExpect(status().isCreated());
-//    }
+
+    @Test
+    public void addWineSuccessfully() throws Exception {
+        AddWineDTO addWineDTO = new AddWineDTO("dost dobro vino", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
+                "05/18/17/22/leaves-7205773__480.jpg", 2, new ArrayList<AddWineCategoryDTO>());
+
+        given(wineService.addWine(addWineDTO)).willReturn(wines.get(0));
+
+        mvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addWineDTO)))
+                .andExpect(status().isCreated());
+    }
 
 }

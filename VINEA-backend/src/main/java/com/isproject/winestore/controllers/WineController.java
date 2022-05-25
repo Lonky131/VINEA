@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 
@@ -73,11 +71,12 @@ public class WineController {
         //dodat vino
         logger.info("Adding wine...");
         Wine wineEntity = wineService.addWine(wine);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/" + wineEntity.getId())
-                .buildAndExpand()
-                .toUri();
-        return ResponseEntity.created(location).build();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/" + wineEntity.getId())
+//                .buildAndExpand()
+//                .toUri();
+//        return ResponseEntity.created(location).build();
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{wineId}")
