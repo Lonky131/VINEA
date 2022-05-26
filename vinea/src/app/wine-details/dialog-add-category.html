@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Pick a category and assign new Value.</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Select category</mat-label>
+    <mat-select [(value)]="data.selectedCategory">
+      <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>New Value:</mat-label>
+    <input matInput [(ngModel)]="data.newValue">
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button (click)="onYesClick()">Confirm</button>
+</div>

@@ -17,7 +17,7 @@ import {cloneDeep} from 'lodash';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   public wines : Array<wine>;
-  displayedColumns: string[] = ['id', 'name', 'productionYear', 'alchoholPercentage', 'volume', 'price','pictureUrl','winery'];
+  displayedColumns: string[] = ['id', 'name', 'productionYear', 'alcoholPercentage', 'volume', 'price','pictureUrl','winery'];
   dataSource: MatTableDataSource<wine>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

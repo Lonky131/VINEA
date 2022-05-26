@@ -13,6 +13,8 @@ import { HomeComponent } from './components/home/home.component';
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { DialogAddCategory } from './wine-details/dialogAddCategory';
+
 
 //Material modules
 import { FlexLayoutModule } from '@angular/flex-layout'
@@ -27,9 +29,12 @@ import { MatMenuModule} from '@angular/material/menu';
 import {MatPaginatorModule } from '@angular/material/paginator';
 import {MatTableModule } from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
 //Services
-import {WineService} from './services/wine.service'
+import {WineService} from './services/wine.service';
+import { WineDetailsComponent } from './wine-details/wine-details.component'
 
 @NgModule({
   declarations: [
@@ -38,7 +43,9 @@ import {WineService} from './services/wine.service'
     HomeComponent,
     WineComponent,
     WineriesComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    WineDetailsComponent,
+    DialogAddCategory
   ],
   imports: [
     HttpClientModule,
@@ -54,8 +61,10 @@ import {WineService} from './services/wine.service'
     MatSidenavModule,
     MatListModule,
     MatInputModule,
+    MatDialogModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
     FlexLayoutModule,
     AppRoutingModule
   ],

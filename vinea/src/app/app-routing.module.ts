@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotfoundComponent } from './components/notfound/notfound.component'
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
+import { WineDetailsComponent } from './wine-details/wine-details.component';
 
 const routes: Routes = [
   {
@@ -12,8 +13,17 @@ const routes: Routes = [
 
   },
   {
-    path: 'wine/:id',
-    component: WineComponent
+    path: 'wine',
+    children: [
+      {
+        path: '',
+        component: WineComponent
+      },
+      {
+        path: ':id',
+        component: WineDetailsComponent
+      }
+    ]
   },
   {
     path: 'wineries',
@@ -23,7 +33,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home'
+    redirectTo: 'wine'
   },
   {
     path: '**',
