@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -135,5 +134,32 @@ public class WineCategoryTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].categoryName", is("boja")))
                 .andExpect(jsonPath("$[0].value", is("crno")));
+    }
+
+    @Test
+    public void deleteWineCategorySuccessfully() throws Exception {
+        given(wineCategoryService.deleteCategoryFromWine(1, 1))
+                .willReturn(true);
+        mvc.perform(delete(endpoint + "/1")
+                .queryParam("wineCategoryId", "1"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deleteWineCategoryFailNoWineId() throws Exception {
+        given(wineCategoryService.deleteCategoryFromWine(100, 1))
+                .willThrow(IdNotExistingException.class);
+        mvc.perform(delete(endpoint + "/100")
+                        .queryParam("wineCategoryId", "1"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteWineCategoryFailNoWineCategoryId() throws Exception {
+        given(wineCategoryService.deleteCategoryFromWine(1, 100))
+                .willThrow(IdNotExistingException.class);
+            mvc.perform(delete(endpoint + "/1")
+                        .queryParam("wineCategoryId", "100"))
+                .andExpect(status().isBadRequest());
     }
 }

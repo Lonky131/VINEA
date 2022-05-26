@@ -16,17 +16,15 @@ import java.util.Optional;
 @Service
 public class WineService {
 
-    private final WineRepoJdbc wineRepoJdbc;
     private final WineRepoJPA wineRepoJPA;
     private final WineryRepoJPA wineryRepoJPA;
     private final CategoryRepoJPA categoryRepoJPA;
     private final WineCategoryRepoJPA wineCategoryRepoJPA;
     private final WineCategoryService wineCategoryService;
 
-    public WineService(WineRepoJdbc wineRepoJdbc, WineRepoJPA wineRepoJPA, WineryRepoJPA wineryRepoJPA,
+    public WineService(WineRepoJPA wineRepoJPA, WineryRepoJPA wineryRepoJPA,
                        CategoryRepoJPA categoryRepoJPA, WineCategoryRepoJPA wineCategoryRepoJPA, WineCategoryService wineCategoryService) {
         this.wineryRepoJPA = wineryRepoJPA;
-        this.wineRepoJdbc = wineRepoJdbc;
         this.wineRepoJPA = wineRepoJPA;
         this.categoryRepoJPA = categoryRepoJPA;
         this.wineCategoryRepoJPA = wineCategoryRepoJPA;
@@ -44,7 +42,7 @@ public class WineService {
             throw new IdNotExistingException("Wine id does not exist!");
         }
         WineDTO wineDTO = new WineDTO(wine.get());
-        List<WineCategoryDTO> wineCategories = wineCategoryService.getWineCategories(wine.get().getId());
+        List<WineCategoryDTO> wineCategories = wineCategoryService.getWineCategories(wineId);
         wineDTO.setWineCategoryDTOList(wineCategories);
         return wineDTO;
     }
@@ -78,14 +76,6 @@ public class WineService {
         return true;
     }
 
-    public List<WineDTO> getWinesByName(String name) {
-        return wineRepoJdbc.getWinesByName(name);
-    }
-
-    public List<WineDTO> getWinesByColor(String color) {
-        return wineRepoJdbc.getWinesByColor(color);
-    }
-
     public Wine updateWine(long id, PutWineDTO wine) {
         Optional<Wine> wineEntity = wineRepoJPA.findById(id);
         if (wineEntity.isEmpty()) {
@@ -103,7 +93,8 @@ public class WineService {
             throw new IdNotExistingException("Winery id does not exist!");
         }
         wineEntity1.setWinery(winery.get());
-        return wineRepoJPA.saveAndFlush(wineEntity1);
+        wineEntity1 = wineRepoJPA.saveAndFlush(wineEntity1);
+        return wineEntity1;
     }
 
 }

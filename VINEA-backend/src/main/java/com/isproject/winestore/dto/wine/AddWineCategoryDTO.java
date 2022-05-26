@@ -1,5 +1,7 @@
 package com.isproject.winestore.dto.wine;
 
+import com.isproject.winestore.models.WineCategory;
+
 public class AddWineCategoryDTO {
 
     private long categoryId;
@@ -8,6 +10,11 @@ public class AddWineCategoryDTO {
     public AddWineCategoryDTO(long categoryId, String value) {
         this.categoryId = categoryId;
         this.value = value;
+    }
+
+    public AddWineCategoryDTO(WineCategory wineCategory) {
+        this.categoryId = wineCategory.getCategory().getId();
+        this.value = wineCategory.getValue();
     }
 
     public long getCategoryId() {
