@@ -7,14 +7,21 @@ public class WineryDTO {
 
     private long id;
     private String name;
-    private int founding_year;
+    private int foundingYear;
     private RegionDTO region;
 
-    public WineryDTO(long id, String name, int founding_year, RegionDTO region_id) {
+    public WineryDTO(long id, String name, int foundingYear, RegionDTO region_id) {
         this.id = id;
         this.name = name;
-        this.founding_year = founding_year;
+        this.foundingYear = foundingYear;
         this.region = region;
+    }
+    
+    public WineryDTO(Winery winery) {
+        this.id = winery.getId();
+        this.name = winery.getName();
+        this.foundingYear = winery.getFoundingYear();
+        this.region = new RegionDTO(winery.getRegion());
     }
 
     public long getId() {
@@ -33,12 +40,12 @@ public class WineryDTO {
         this.name = name;
     }
 
-    public int getFounding_year() {
-        return founding_year;
+    public int getFoundingYear() {
+        return foundingYear;
     }
 
-    public void setFounding_year(int founding_year) {
-        this.founding_year = founding_year;
+    public void setFoundingYear(int foundingYear) {
+        this.foundingYear = foundingYear;
     }
 
     public RegionDTO getRegion() {
@@ -50,6 +57,6 @@ public class WineryDTO {
     }
 
     public Winery toWineryEntity() {
-        return new Winery(name, founding_year, region.toRegionEntity());
+        return new Winery(name, foundingYear, region.toRegionEntity());
     }
 }

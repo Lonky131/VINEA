@@ -3,6 +3,9 @@ package com.isproject.winestore.dto.wine;
 import com.isproject.winestore.dto.wineries.WineryDTO;
 import com.isproject.winestore.models.Wine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WineDTO {
 
     private long id;
@@ -13,6 +16,7 @@ public class WineDTO {
     private double price;
     private String pictureUrl;
     private WineryDTO winery;
+    private List<WineCategoryDTO> wineCategoryDTOList = new ArrayList<>();
 
     public WineDTO(long id, String name, int productionYear, double alcoholPercentage, int volume, double price,
                    String pictureUrl, WineryDTO winery) {
@@ -24,6 +28,17 @@ public class WineDTO {
         this.price = price;
         this.pictureUrl = pictureUrl;
         this.winery = winery;
+    }
+
+    public WineDTO(Wine wine) {
+        this.id = wine.getId();
+        this.name = wine.getName();
+        this.productionYear = wine.getProductionYear();
+        this.alcoholPercentage = wine.getAlcoholPercentage();
+        this.volume = wine.getVolume();
+        this.price = wine.getPrice();
+        this.pictureUrl = wine.getPictureUrl();
+        this.winery = new WineryDTO(wine.getWinery());
     }
 
     public long getId() {
@@ -88,6 +103,18 @@ public class WineDTO {
 
     public void setWinery(WineryDTO winery) {
         this.winery = winery;
+    }
+
+    public List<WineCategoryDTO> getWineCategoryDTOList() {
+        return wineCategoryDTOList;
+    }
+
+    public void setWineCategoryDTOList(List<WineCategoryDTO> wineCategoryDTOList) {
+        this.wineCategoryDTOList = wineCategoryDTOList;
+    }
+
+    public void addCategory(WineCategoryDTO wineCategoryDTO) {
+        wineCategoryDTOList.add(wineCategoryDTO);
     }
 
     public Wine toWineEntity() {

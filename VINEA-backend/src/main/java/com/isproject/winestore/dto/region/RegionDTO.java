@@ -14,6 +14,12 @@ public class RegionDTO {
         this.country = country;
     }
 
+    public RegionDTO(Region region) {
+        this.id = region.getId();
+        this.name = region.getName();
+        this.country = region.getCountry();
+    }
+
     public long getId() {
         return id;
     }
