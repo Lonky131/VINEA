@@ -4,17 +4,18 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { HttpParams } from '@angular/common/http';
-import {WineService} from '../services/wine.service';
-import {wine} from '../classes/wine';
-import {cloneDeep} from 'lodash';
-import { wineCategory } from '../classes/wine-category';
+import {WineService} from '../../services/wine.service';
+import {wine} from '../../classes/wine';
+import { wineCategory } from '../../classes/wine-category';
 import { map, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { DialogOverviewExampleDialog } from './dialog-overview-example-dialog';
-import { CategoryService } from '../services/category.service';
-import {DialogAddCategory} from './dialogAddCategory';
-import { category } from '../classes/category';
+import { DialogOverviewExampleDialog } from '../../dialogs/dialogYesNo/dialog-overview-example-dialog';
+import { CategoryService } from '../../services/category.service';
+import {DialogAddCategory} from '../../dialogs/dialogAddCategory/dialogAddCategory';
+import { category } from '../../classes/category';
+import { DialogEditWine } from '../../dialogs/dialogEditWine/dialogEditWine';
+import {cloneDeep} from 'lodash';
 
 
 
@@ -40,7 +41,8 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
     private wineService: WineService,
     private activatedRoute: ActivatedRoute,
     private categoryService: CategoryService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
 
     this.sub = this.activatedRoute.params.subscribe(params => {
@@ -97,15 +99,8 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
       console.log('Dialog closed');
       console.log(result);
       if(result == true){
-/**
- * ADD WINE DELETE FUNCTIONALITY HERE
- *
- *
- */
-
-        this.wineService.getWineById(this.wine.id).subscribe((res) => {
-          console.log(`This is function call after confirm delete ${res.name}`);
-        })
+        this.wineService.deleteWine(this.wine.id).subscribe();
+        this.router.navigate([`wine`]);
       }
 
     })
@@ -153,11 +148,38 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
             this.dataSource.sort = this.sort;
           });
         } else{
-          console.log("NO CATEGRIES AT ALL!");
+          console.log("NO CATEGORIES AT ALL!");
         }
       }
     });
 
+  }
+
+  editWineDialog(){
+    let editedWine = cloneDeep(this.wine);
+    const dialogRef = this.dialog.open(DialogEditWine, {
+      width: '700px',
+      data: {
+        wine : editedWine
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if(result !== undefined){
+        this.wineService.editWine(
+          this.wine.id,
+          result.wine.name,
+          result.wine.productionYear,
+          result.wine.alcoholPercentage,
+          result.wine.volume,
+          result.wine.price,
+          result.wine.pictureUrl,
+          result.wine.winery.id
+          ).subscribe();
+      }
+    })
   }
 
 }

@@ -4,7 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotfoundComponent } from './components/notfound/notfound.component'
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
-import { WineDetailsComponent } from './wine-details/wine-details.component';
+import { WineDetailsComponent } from './components/wine-details/wine-details.component';
 
 const routes: Routes = [
   {

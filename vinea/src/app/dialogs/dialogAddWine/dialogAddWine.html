@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Pick a category and assign new Value.</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Name of the wine:</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Year of production:</mat-label>
+    <input matInput [(ngModel)]="data.productionYear">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Alcohol percentage:</mat-label>
+    <input matInput type="number" [(ngModel)]="data.alcoholPercentage">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Volume (mL):</mat-label>
+    <input matInput type="number" [(ngModel)]="data.volume">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Price (Kn):</mat-label>
+    <input matInput type="number" [(ngModel)]="data.price">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Picture Url:</mat-label>
+    <input matInput [(ngModel)]="data.pictureUrl">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select winery</mat-label>
+    <mat-select [(value)]="data.wineryId">
+      <mat-option *ngFor="let winery of wineries" [value]="winery.id">{{winery.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button (click)="onYesClick()">Confirm</button>
+</div>

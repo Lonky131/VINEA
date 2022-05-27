@@ -1,5 +1,6 @@
 
 import {winery} from './winery';
+import {wineCategory} from './wine-category';
 
 export class wine {
   id: number;
@@ -10,4 +11,5 @@ export class wine {
   price: number;
   pictureUrl: string;
   winery : winery;
+  wineCategoryDTOList : wineCategory[];
 }

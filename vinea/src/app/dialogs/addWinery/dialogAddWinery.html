@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Pick a category and assign new Value.</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Select region</mat-label>
+    <mat-select [(value)]="data.regionId">
+      <mat-option *ngFor="let region of regions" [value]="region.id">{{region.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Winery name:</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Founding Year:</mat-label>
+    <input matInput [(ngModel)]="data.foundingYear">
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button (click)="onYesClick()">Confirm</button>
+</div>

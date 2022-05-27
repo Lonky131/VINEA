@@ -1,33 +1,42 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, Subject, throwError} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
-import {HttpParams} from '@angular/common/http';
-import {wine} from '../classes/wine'
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { wine } from '../classes/wine'
 import { wineCategory } from '../classes/wine-category';
+import { category } from '../classes/category';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class WineService {
-
   constructor(
     private http: HttpClient
-
   ) { }
+
+
     getAllWines (): Observable<wine[]>{
       return this.http.get<wine[]>("/api/wine", {responseType: 'json'});
     }
 
     getWineById(id : number) : Observable<wine>{
-      return this.http.get<wine>(`/api/wine/${id}`, {
-        responseType : 'json'
-      })
+      return this.http.get<wine>(`/api/wine/${id}`, {responseType : 'json'});
     }
 
     getWineCategoriesById(id: number) : Observable<wineCategory[]>{
       return this.http.get<wineCategory[]>(`/api/wine-category/${id}`, {responseType: 'json'});
+    }
+
+    addWine(name : string, productionYear : number, alcoholPercentage : number, volume : number, price : number, pictureUrl : string, wineryId : number, categories : category[]){
+      return this.http.post(`/api/wine`, {name, productionYear, alcoholPercentage, volume, price, pictureUrl, wineryId, categories});
+    }
+
+    editWine(id: number, name : string, productionYear : number, alcoholPercentage : number, volume : number, price : number, pictureUrl : string, wineryId : number){
+      return this.http.put(`/api/wine/${id}`, {name, productionYear, alcoholPercentage, volume, price, pictureUrl, wineryId});
+    }
+
+    deleteWine(id : number){
+      return this.http.delete(`/api/wine/${id}`);
     }
 
     addCategoryToWine(id : number, categoryId :number, value : string){
@@ -41,7 +50,6 @@ export class WineService {
       let urlSearchParams = new URLSearchParams();
       urlSearchParams.append('wineCategoryId', wineCategoryId.toString());
       return this.http.delete(`api/wine-category/${id}?${urlSearchParams.toString()}`);
-
     }
 
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -12,8 +12,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
+import { WineDetailsComponent } from './components/wine-details/wine-details.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
-import { DialogAddCategory } from './wine-details/dialogAddCategory';
+import { DialogAddCategory } from './dialogs/dialogAddCategory/dialogAddCategory';
+import { DialogAddWine } from './dialogs/dialogAddWine/dialogAddWine';
+import { DialogAddWinery } from './dialogs/addWinery/dialogAddWinery';
+import { DialogEditWine } from './dialogs/dialogEditWine/dialogEditWine';
 
 
 //Material modules
@@ -26,15 +30,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule} from '@angular/material/menu';
-import {MatPaginatorModule } from '@angular/material/paginator';
-import {MatTableModule } from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 //Services
-import {WineService} from './services/wine.service';
-import { WineDetailsComponent } from './wine-details/wine-details.component'
+import { WineService } from './services/wine.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { WineDetailsComponent } from './wine-details/wine-details.component'
     WineriesComponent,
     NotfoundComponent,
     WineDetailsComponent,
-    DialogAddCategory
+    DialogAddCategory,
+    DialogAddWine,
+    DialogAddWinery,
+    DialogEditWine
   ],
   imports: [
     HttpClientModule,
