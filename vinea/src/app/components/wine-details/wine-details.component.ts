@@ -86,9 +86,6 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
       this.dataSource.paginator.firstPage();
     }
   }
-  editCategory(id : any){
-    console.log(id);
-  }
 
   deleteWineDialog() : void{
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
