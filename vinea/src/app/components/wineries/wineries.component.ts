@@ -76,7 +76,10 @@ export class WineriesComponent implements OnInit, AfterViewInit {
 
   deleteWineryDialog(wineryId: number) : void{
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '300px'
+      width: '300px',
+      data: {
+        warningMessage : 'This action will delete this winery and ALL the wines from it!'
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

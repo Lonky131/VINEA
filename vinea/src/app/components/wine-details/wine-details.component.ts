@@ -92,7 +92,10 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
 
   deleteWineDialog() : void{
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '300px'
+      width: '300px',
+      data: {
+        warningMessage : 'This action will delete this wine.'
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -109,7 +112,10 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
 
   deleteWineCategoryDialog(categoryId: number) : void{
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '300px'
+      width: '300px',
+      data: {
+        warningMessage : 'This action will delete this category.'
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

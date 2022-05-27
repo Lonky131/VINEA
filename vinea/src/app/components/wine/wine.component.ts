@@ -51,17 +51,11 @@ export class WineComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log("Home initialized...");
-    // this.wineService.getWineById(1).subscribe((res) => {
-    //   console.log(res);
-    // });
-    //this.getAllWines();
-
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    //console.log(this.wines);
   }
 
   applyFilter(event: Event) {
@@ -76,7 +70,6 @@ export class WineComponent implements OnInit, AfterViewInit {
     console.log(id);
     this.router.navigate([`wine/${id}`]);
   }
-
 
   addWine(){
     const dialogRef = this.dialog.open(DialogAddWine, {
