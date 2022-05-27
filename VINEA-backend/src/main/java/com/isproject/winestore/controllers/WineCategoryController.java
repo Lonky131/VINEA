@@ -1,6 +1,5 @@
 package com.isproject.winestore.controllers;
 
-import com.isproject.winestore.dto.wine.PutWineCategoryDTO;
 import com.isproject.winestore.dto.wine.WineCategoryDTO;
 import com.isproject.winestore.exceptions.DuplicateKeyIdException;
 import com.isproject.winestore.exceptions.IdNotExistingException;
@@ -52,10 +51,10 @@ public class WineCategoryController {
     @PutMapping(value = "/{wineId}")
     public ResponseEntity<WineCategory> updateWineCategory(@PathVariable long wineId,
                                                            @RequestParam long wineCategoryId,
-                                                           @RequestBody PutWineCategoryDTO putWineCategoryDTO) {
+                                                           @RequestParam String value) {
         logger.info("Updating wine " + wineId + "...");
-        return new ResponseEntity<WineCategory>(wineCategoryService.updateWineCategory(
-                wineId, wineCategoryId, putWineCategoryDTO), HttpStatus.OK);
+        return new ResponseEntity<WineCategory>(
+                wineCategoryService.updateWineCategory(wineId, wineCategoryId, value), HttpStatus.OK);
     }
 
 
