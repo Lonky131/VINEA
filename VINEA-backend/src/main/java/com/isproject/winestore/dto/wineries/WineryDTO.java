@@ -10,7 +10,7 @@ public class WineryDTO {
     private int foundingYear;
     private RegionDTO region;
 
-    public WineryDTO(long id, String name, int foundingYear, RegionDTO region_id) {
+    public WineryDTO(long id, String name, int foundingYear, RegionDTO region) {
         this.id = id;
         this.name = name;
         this.foundingYear = foundingYear;

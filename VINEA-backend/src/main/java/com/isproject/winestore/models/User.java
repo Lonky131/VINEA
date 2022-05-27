@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "user", schema = "public")
 public class User {
 
     @Id
@@ -93,11 +94,11 @@ public class User {
         this.createdAccount = createdAccount;
     }
 
-    public int isAdmin() {
+    public int getIsAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(int admin) {
-        isAdmin = admin;
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

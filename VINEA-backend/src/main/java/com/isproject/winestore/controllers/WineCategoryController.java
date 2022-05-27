@@ -3,7 +3,6 @@ package com.isproject.winestore.controllers;
 import com.isproject.winestore.dto.wine.WineCategoryDTO;
 import com.isproject.winestore.exceptions.DuplicateKeyIdException;
 import com.isproject.winestore.exceptions.IdNotExistingException;
-import com.isproject.winestore.models.WineCategory;
 import com.isproject.winestore.services.WineCategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +32,12 @@ public class WineCategoryController {
     }
 
     @PostMapping(value = "/{wineId}")
-    public ResponseEntity addCategoryToWine(@RequestParam(required = true) long categoryId,
+    public ResponseEntity<WineCategoryDTO> addCategoryToWine(@RequestParam(required = true) long categoryId,
                                             @RequestParam(required = true) String value,
                                             @PathVariable long wineId) {
         logger.info("Adding value " + value + " of category " + categoryId + " to wine " + wineId + "...");
-        wineCategoryService.addCategoryToWine(wineId, categoryId, value);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(new WineCategoryDTO(wineCategoryService.addCategoryToWine(wineId, categoryId, value)),
+                HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{wineId}")
@@ -49,12 +48,12 @@ public class WineCategoryController {
     }
 
     @PutMapping(value = "/{wineId}")
-    public ResponseEntity<WineCategory> updateWineCategory(@PathVariable long wineId,
-                                                           @RequestParam long wineCategoryId,
-                                                           @RequestParam String value) {
+    public ResponseEntity<WineCategoryDTO> updateWineCategory(@PathVariable long wineId,
+                                                              @RequestParam long wineCategoryId,
+                                                              @RequestParam String value) {
         logger.info("Updating wine " + wineId + "...");
-        return new ResponseEntity<WineCategory>(
-                wineCategoryService.updateWineCategory(wineId, wineCategoryId, value), HttpStatus.OK);
+        return new ResponseEntity<WineCategoryDTO>(
+                new WineCategoryDTO(wineCategoryService.updateWineCategory(wineId, wineCategoryId, value)), HttpStatus.OK);
     }
 
 

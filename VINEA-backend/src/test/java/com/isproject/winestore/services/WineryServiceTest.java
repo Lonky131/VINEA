@@ -8,6 +8,7 @@ import com.isproject.winestore.dto.wineries.PutWineryDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.*;
 import com.isproject.winestore.repos.RegionRepoJPA;
+import com.isproject.winestore.repos.WineRepoJPA;
 import com.isproject.winestore.repos.WineryRepoJPA;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ public class WineryServiceTest {
 
     @Mock
     private RegionRepoJPA regionRepoJPA;
+
+    @Mock
+    private WineRepoJPA wineRepoJPA;
     private WineryService wineryService;
 
     List<Region> regions;
@@ -47,7 +51,7 @@ public class WineryServiceTest {
 
     @BeforeEach
     public void setUp() {
-        wineryService = new WineryService(wineryRepoJPA, regionRepoJPA);
+        wineryService = new WineryService(wineryRepoJPA, regionRepoJPA, wineRepoJPA);
 
         regions = Arrays.asList(
                 new Region("dalmacija", "hrvatska"),

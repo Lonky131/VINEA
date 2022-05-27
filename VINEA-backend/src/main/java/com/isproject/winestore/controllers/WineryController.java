@@ -2,6 +2,7 @@ package com.isproject.winestore.controllers;
 
 import com.isproject.winestore.dto.wineries.AddWineryDTO;
 import com.isproject.winestore.dto.wineries.PutWineryDTO;
+import com.isproject.winestore.dto.wineries.WineryDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Winery;
 import com.isproject.winestore.services.WineryService;
@@ -26,9 +27,9 @@ public class WineryController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Winery> getWinery(@PathVariable long id) {
+    public ResponseEntity<WineryDTO> getWinery(@PathVariable long id) {
         logger.info("Fetching winery with id " + id + "...");
-        return new ResponseEntity<Winery>(wineryService.getWineryById(id), HttpStatus.OK);
+        return new ResponseEntity<WineryDTO>(new WineryDTO(wineryService.getWineryById(id)), HttpStatus.OK);
     }
 
     @GetMapping
@@ -38,14 +39,10 @@ public class WineryController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addWinery(@RequestBody AddWineryDTO winery) {
+    public ResponseEntity<WineryDTO> addWinery(@RequestBody AddWineryDTO winery) {
         logger.info("Adding new winery...");
         Winery winery1 = wineryService.addWinery(winery);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/" + winery1.getId())
-//                .buildAndExpand()
-//                .toUri();
-        return new ResponseEntity(winery1, HttpStatus.CREATED);
+        return new ResponseEntity(new WineryDTO(winery1), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{wineryId}")
@@ -56,9 +53,10 @@ public class WineryController {
     }
 
     @PutMapping(value = "/{wineryId}")
-    public ResponseEntity<Winery> updateWine(@PathVariable long wineryId, @RequestBody PutWineryDTO wineryDTO) {
+    public ResponseEntity<WineryDTO> updateWine(@PathVariable long wineryId, @RequestBody PutWineryDTO wineryDTO) {
         logger.info("Updating winery with id " + wineryId + "...");
-        return new ResponseEntity<Winery>(wineryService.updateWinery(wineryId, wineryDTO), HttpStatus.OK);
+        return new ResponseEntity<WineryDTO>(
+                new WineryDTO(wineryService.updateWinery(wineryId, wineryDTO)), HttpStatus.OK);
     }
 
     @ExceptionHandler(value = {IdNotExistingException.class})
