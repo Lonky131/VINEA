@@ -1,6 +1,5 @@
 package com.isproject.winestore.services;
 
-import com.isproject.winestore.dto.wine.PutWineCategoryDTO;
 import com.isproject.winestore.dto.wine.WineCategoryDTO;
 import com.isproject.winestore.exceptions.DuplicateKeyIdException;
 import com.isproject.winestore.exceptions.IdNotExistingException;
@@ -74,7 +73,7 @@ public class WineCategoryService {
     }
 
 
-    public WineCategory updateWineCategory(long wineId, long wineCategoryId, PutWineCategoryDTO putWineCategoryDTO) {
+    public WineCategory updateWineCategory(long wineId, long wineCategoryId, String value) {
         Optional<Wine> wine = wineRepoJPA.findById(wineId);
         if (wine.isEmpty()) {
             throw new IdNotExistingException("Wine id does not exist!");
@@ -84,10 +83,7 @@ public class WineCategoryService {
             throw new IdNotExistingException("Wine category does not exist!");
         }
         WineCategory wineCategory1 = wineCategory.get();
-        Optional<Category> category = categoryRepoJPA.findById(putWineCategoryDTO.getCategoryId());
-        if (category.isEmpty())
-            throw new IdNotExistingException("Category id does not exist!");
-        wineCategory1.setValue(putWineCategoryDTO.getValue());
+        wineCategory1.setValue(value);
         return wineCategoryRepoJPA.saveAndFlush(wineCategory1);
     }
 }
