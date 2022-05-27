@@ -6,8 +6,10 @@ import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
 import com.isproject.winestore.models.Winery;
 import com.isproject.winestore.repos.RegionRepoJPA;
+import com.isproject.winestore.repos.WineRepoJPA;
 import com.isproject.winestore.repos.WineryRepoJPA;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +19,12 @@ public class WineryService {
 
     private final WineryRepoJPA wineryRepoJPA;
     private final RegionRepoJPA regionRepoJPA;
+    private final WineRepoJPA wineRepoJPA;
 
-    public WineryService(WineryRepoJPA wineryRepoJPA, RegionRepoJPA regionRepoJPA) {
+    public WineryService(WineryRepoJPA wineryRepoJPA, RegionRepoJPA regionRepoJPA, WineRepoJPA wineRepoJPA) {
         this.wineryRepoJPA = wineryRepoJPA;
         this.regionRepoJPA = regionRepoJPA;
+        this.wineRepoJPA = wineRepoJPA;
     }
     
     public Winery getWineryById(long id) {
@@ -42,10 +46,12 @@ public class WineryService {
         return wineryRepoJPA.findAll();
     }
 
+    @Transactional
     public boolean deleteWinery(long wineryId) {
         Optional<Winery> winery = wineryRepoJPA.findById(wineryId);
         if (winery.isEmpty())
             throw new IdNotExistingException("Winery id does not exist!");
+        wineRepoJPA.deleteAllByWinery(winery.get());
         wineryRepoJPA.deleteById(wineryId);
         return true;
     }

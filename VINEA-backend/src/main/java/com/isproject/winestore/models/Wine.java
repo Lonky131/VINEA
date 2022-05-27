@@ -25,6 +25,9 @@ public class Wine {
     @OneToMany(mappedBy = "wine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WineCategory> categories;
 
+    @OneToMany(mappedBy = "wine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
+
     public Wine(String name, int productionYear, double alcoholPercentage, int volume, double price,
                 String pictureUrl, Winery winery) {
         this.name = name;
@@ -124,5 +127,32 @@ public class Wine {
 
     public void addWineCategory(WineCategory wineCategory) {
         categories.add(wineCategory);
+    }
+
+    public void deleteWineCategory(long categoryId) {
+        int index = 0;
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getCategory().getId() == categoryId) {
+                index = i;
+                break;
+            }
+        }
+        categories.remove(index);
+    }
+
+
+    public void updateWineCategory(long wineCategoryId, String value) {
+        for (WineCategory wineCategory: categories) {
+            if (wineCategory.getCategory().getId() == wineCategoryId) {
+                wineCategory.setValue(value);
+            }
+        }
+    }
+    public List<WineCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<WineCategory> categories) {
+        this.categories = categories;
     }
 }

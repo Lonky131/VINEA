@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -31,9 +32,11 @@ public class WineController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Wine>> getAllWines() {
+    public ResponseEntity<List<WineDTO>> getAllWines() {
         logger.info("Fetching all wines...");
-        return new ResponseEntity<List<Wine>>(wineService.getWines(), HttpStatus.OK);
+        return new ResponseEntity<List<WineDTO>>(wineService.getWines()
+                .stream().map(wine -> new WineDTO(wine)).collect(Collectors.toList()),
+                HttpStatus.OK);
     }
 
 
@@ -47,11 +50,11 @@ public class WineController {
     }
 
     @PostMapping
-    public ResponseEntity addWine(@RequestBody AddWineDTO wine) {
+    public ResponseEntity<Wine> addWine(@RequestBody AddWineDTO wine) {
         //dodat vino
         logger.info("Adding wine...");
         Wine wineEntity = wineService.addWine(wine);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(wineEntity, HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{wineId}")
@@ -63,9 +66,9 @@ public class WineController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Wine> updateWine(@PathVariable long id, @RequestBody PutWineDTO wine) {
+    public ResponseEntity<WineDTO> updateWine(@PathVariable long id, @RequestBody PutWineDTO wine) {
         logger.info("Updating wine with id " + id + "...");
-        return new ResponseEntity<Wine>(wineService.updateWine(id, wine), HttpStatus.OK);
+        return new ResponseEntity<WineDTO>(new WineDTO(wineService.updateWine(id, wine)), HttpStatus.OK);
     }
 
     @ExceptionHandler(value = {IdNotExistingException.class, DuplicateKeyIdException.class})

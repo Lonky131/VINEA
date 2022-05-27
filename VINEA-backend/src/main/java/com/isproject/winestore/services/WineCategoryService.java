@@ -29,7 +29,7 @@ public class WineCategoryService {
         this.wineCategoryRepoJPA = wineCategoryRepoJPA;
     }
 
-    public boolean addCategoryToWine(long wineId, long categoryId, String value) {
+    public WineCategory addCategoryToWine(long wineId, long categoryId, String value) {
         Optional<Category> category = categoryRepoJPA.findById(categoryId);
         if (category.isEmpty()) {
             throw new IdNotExistingException("Category id does not exist!");
@@ -39,13 +39,13 @@ public class WineCategoryService {
             throw new IdNotExistingException("Wine id does not exist!");
         }
         Optional<WineCategory> wineCategory = wineCategoryRepoJPA.findByCategoryAndWine(category.get(), wine.get());
+
         if (wineCategory.isPresent()) {
             throw new DuplicateKeyIdException("Wine already has that category set!");
         }
         WineCategory wineCategory1 = new WineCategory(category.get(), wine.get(), value);
         wine.get().addWineCategory(wineCategory1);
-        wineCategoryRepoJPA.saveAndFlush(wineCategory1);
-        return true;
+        return wineCategoryRepoJPA.saveAndFlush(wineCategory1);
     }
 
     public List<WineCategoryDTO> getWineCategories(long wineId) {
@@ -63,11 +63,15 @@ public class WineCategoryService {
     public boolean deleteCategoryFromWine(long wineId, long wineCategoryId) {
         Optional<WineCategory> wineCategory = wineCategoryRepoJPA.findById(wineCategoryId);
         if (wineCategory.isEmpty()) {
-            throw new IdNotExistingException("Wine category is does not exist!");
+            throw new IdNotExistingException("Wine category id does not exist!");
         }
+        Optional<Wine> wine = wineRepoJPA.findById(wineId);
+        if (wine.isEmpty())
+            throw new IdNotExistingException("Wine id does not exist!");
         if (wineCategory.get().getWine().getId() != wineId) {
             throw new IdNotExistingException("Wine does not have this category value!");
         }
+        wine.get().deleteWineCategory(wineCategory.get().getCategory().getId());
         wineCategoryRepoJPA.deleteById(wineCategoryId);
         return true;
     }
@@ -84,6 +88,7 @@ public class WineCategoryService {
         }
         WineCategory wineCategory1 = wineCategory.get();
         wineCategory1.setValue(value);
+        wine.get().updateWineCategory(wineCategory.get().getCategory().getId(), value);
         return wineCategoryRepoJPA.saveAndFlush(wineCategory1);
     }
 }

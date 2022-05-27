@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -82,7 +83,8 @@ public class WineCategoryServiceTest {
         wineCategories = Arrays.asList(
                 new WineCategory(categories.get(0), wines.get(0), "crno"),
                 new WineCategory(categories.get(1), wines.get(0), "merlot"),
-                new WineCategory(categories.get(0), wines.get(1), "bijelo")
+                new WineCategory(categories.get(0), wines.get(1), "bijelo"),
+                new WineCategory(categories.get(0), wines.get(0), "bijelo")
         );
 
         wineCategoryDTOS = wineCategories.stream().map(wineCategory -> new WineCategoryDTO(
@@ -103,8 +105,10 @@ public class WineCategoryServiceTest {
         given(wineRepoJPA.findById(1L)).willReturn(Optional.ofNullable(wines.get(0)));
         given(wineCategoryRepoJPA.findByCategoryAndWine(categories.get(0), wines.get(0)))
                 .willReturn(Optional.empty());
-        given(wineCategoryRepoJPA.saveAndFlush(any(WineCategory.class))).willReturn(wineCategories.get(0));
-        assertThat(wineCategoryService.addCategoryToWine(1L, 1L, "dummy")).isTrue();
+        WineCategory wineCategory = new WineCategory(categories.get(2), wines.get(0), "dummy");
+        given(wineCategoryRepoJPA.saveAndFlush(any(WineCategory.class))).willReturn(wineCategory);
+        assertThat(wineCategoryService.addCategoryToWine(1L, 1L, "dummy").getValue())
+                .isEqualTo("dummy");
     }
 
     @Test
@@ -159,7 +163,7 @@ public class WineCategoryServiceTest {
         WineCategory wineCategory = new WineCategory(categories.get(0), wine, "crno");
         given(wineCategoryRepoJPA.findById(1L))
                 .willReturn(Optional.ofNullable(wineCategory));
-        assertThat(wineCategoryService.deleteCategoryFromWine(1L, 1L)).isTrue();
+        assertDoesNotThrow(() -> wineCategoryService.deleteCategoryFromWine(1L, 1L));
     }
 
 
@@ -170,4 +174,48 @@ public class WineCategoryServiceTest {
         assertThrows(IdNotExistingException.class,
                 () -> wineCategoryService.deleteCategoryFromWine(1L, 100L));
     }
+
+    @Test
+    public void deleteCategoryFromWineWineHasNoCategory() {
+        Wine wine = new Wine( "dost dobro vino", 2015, 15.5, 1000,
+                75.99, "https://cdn.pixabay.com/photo/2022/" +
+                "05/18/17/22/leaves-7205773__480.jpg", wineries.get(0));
+        wine.setId(2L);
+        WineCategory wineCategory = new WineCategory(categories.get(0), wine, "crno");
+        given(wineCategoryRepoJPA.findById(1L))
+                .willReturn(Optional.ofNullable(wineCategory));
+        assertThrows(IdNotExistingException.class, () -> wineCategoryService.deleteCategoryFromWine(1L, 1L));
+    }
+
+    @Test
+    public void updateWineCategory() {
+        given(wineRepoJPA.findById(1L))
+                .willReturn(Optional.ofNullable(wines.get(0)));
+        given(wineCategoryRepoJPA.findById(10L))
+                .willReturn(Optional.ofNullable(wineCategories.get(0)));
+        given(wineCategoryRepoJPA.saveAndFlush(any(WineCategory.class)))
+                .willReturn(wineCategories.get(3));
+        assertThat(wineCategoryService.updateWineCategory(1L,10L, "bijelo"));
+
+    }
+
+    @Test
+    public void updateWineCategoryNoWineId() {
+        given(wineRepoJPA.findById(1L))
+                .willThrow(IdNotExistingException.class);
+        assertThrows(IdNotExistingException.class,
+                () -> wineCategoryService.updateWineCategory(1L,10L, "bijelo"));
+    }
+
+    @Test
+    public void updateWineCategoryNoWineCategoryId() {
+        given(wineRepoJPA.findById(1L))
+                .willReturn(Optional.ofNullable(wines.get(0)));
+        given(wineCategoryRepoJPA.findById(10L))
+                .willThrow(IdNotExistingException.class);
+        assertThrows(IdNotExistingException.class,
+                () -> wineCategoryService.updateWineCategory(1L,10L, "bijelo"));
+
+    }
 }
+

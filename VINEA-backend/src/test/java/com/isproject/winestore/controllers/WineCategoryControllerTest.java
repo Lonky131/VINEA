@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(WineCategoryController.class)
-public class WineCategoryTest {
+public class WineCategoryControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -94,7 +94,8 @@ public class WineCategoryTest {
 
     @Test
     public void addCategoryToWineSuccess() throws Exception {
-        given(wineCategoryService.addCategoryToWine(1,1, "crno")).willReturn(true);
+        given(wineCategoryService.addCategoryToWine(1,1, "crno"))
+                .willReturn(wineCategories.get(0));
 
         mvc.perform(post(endpoint +"/1")
                         .param("categoryId", "1")
