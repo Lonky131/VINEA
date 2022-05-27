@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
 import { WineDetailsComponent } from './components/wine-details/wine-details.component';
@@ -43,7 +42,6 @@ import { WineService } from './services/wine.service';
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
     WineComponent,
     WineriesComponent,
     NotfoundComponent,
@@ -74,7 +72,7 @@ import { WineService } from './services/wine.service';
     FlexLayoutModule,
     AppRoutingModule
   ],
-  providers: [WineService],
+  providers: [WineService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

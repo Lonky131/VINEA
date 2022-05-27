@@ -11,5 +11,5 @@ export class wine {
   price: number;
   pictureUrl: string;
   winery : winery;
-  wineCategoryDTOList : wineCategory[];
+  //wineCategoryDTOList : wineCategory[];
 }
