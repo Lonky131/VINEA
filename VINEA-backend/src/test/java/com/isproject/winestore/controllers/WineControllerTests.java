@@ -143,44 +143,4 @@ public class WineControllerTests {
                 .andExpect(status().isCreated());
     }
 
-
-//    @Test
-//    public void putWineSuccess() throws Exception {
-//        PutWineDTO putWineDTO = new PutWineDTO(1, "ma jako dobro vino", 2016, 15, 1500, 150, "https://cdn.pixabay.com/photo/2022/05/11/06/00" +
-//                "/flowers-7188503__340.jpg", 2);
-//
-//        given(wineService.updateWine(1, putWineDTO))
-//                .willReturn(wines.get(5));
-//        mvc.perform(put(endpoint + "/1")
-//                        .content(objectMapper.writeValueAsString(putWineDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name", is(putWineDTO.getName())));
-//    }
-//
-//    @Test
-//    public void putWineFailNoWineId() throws Exception {
-//        PutWineDTO putWineDTO = new PutWineDTO(10, "ma jako dobro vino", 2016, 15, 1500, 150, "https://cdn.pixabay.com/photo/2022/05/11/06/00" +
-//                "/flowers-7188503__340.jpg", 2);
-//
-//        given(wineService.updateWine(10, putWineDTO))
-//                .willThrow(new IdNotExistingException("Wine id does not exist!"));
-//        mvc.perform(put(endpoint + "/10")
-//                        .content(objectMapper.writeValueAsString(putWineDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
-//    @Test
-//    public void putWineFailNoWineryId() throws Exception {
-//        PutWineDTO putWineDTO = new PutWineDTO(1, "ma jako dobro vino", 2016, 15, 1500, 150, "https://cdn.pixabay.com/photo/2022/05/11/06/00" +
-//                "/flowers-7188503__340.jpg", 10);
-//
-//        given(wineService.updateWine(1, putWineDTO))
-//                .willThrow(IdNotExistingException.class);
-//        mvc.perform(put(endpoint + "/1")
-//                        .content(objectMapper.writeValueAsString(putWineDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
-
 }

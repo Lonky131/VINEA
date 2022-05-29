@@ -2,14 +2,20 @@ package com.isproject.winestore.services;
 
 import com.isproject.winestore.dto.wine.*;
 import com.isproject.winestore.exceptions.IdNotExistingException;
+import com.isproject.winestore.exceptions.NameAlreadyExistsException;
+import com.isproject.winestore.exceptions.YearNotValidException;
 import com.isproject.winestore.models.Category;
 import com.isproject.winestore.models.Wine;
 import com.isproject.winestore.models.WineCategory;
 import com.isproject.winestore.models.Winery;
-import com.isproject.winestore.repos.*;
+import com.isproject.winestore.repos.CategoryRepoJPA;
+import com.isproject.winestore.repos.WineCategoryRepoJPA;
+import com.isproject.winestore.repos.WineRepoJPA;
+import com.isproject.winestore.repos.WineryRepoJPA;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +58,14 @@ public class WineService {
         if (wineryEntity.isEmpty()) {
             throw new IdNotExistingException("Winery id not existing!");
         }
+        Optional<Wine> wineEntityName = wineRepoJPA.findByName(wine.getName());
+        if (wineEntityName.isPresent()) {
+            throw new NameAlreadyExistsException("Wine name already exists!");
+        }
+        int currentYear = new Date().getYear() + 1900;
+        if (wine.getProductionYear() > currentYear || wine.getProductionYear() < 0) {
+            throw new YearNotValidException("Wine production year is not valid!");
+        }
         List<WineCategory> wineCategories = new ArrayList<>();
         for (AddWineCategoryDTO addWineCategoryDTO: wine.getCategories()) {
             Optional<Category> category = categoryRepoJPA.findById(addWineCategoryDTO.getCategoryId());
@@ -80,6 +94,14 @@ public class WineService {
         Optional<Wine> wineEntity = wineRepoJPA.findById(id);
         if (wineEntity.isEmpty()) {
             throw new IdNotExistingException("Wine id does not exist!");
+        }
+        Optional<Wine> wineEntityName = wineRepoJPA.findByName(wine.getName());
+        if (wineEntityName.isPresent() && !wineEntityName.get().getName().equals(wineEntity.get().getName())) {
+            throw new NameAlreadyExistsException("Wine name already exists!");
+        }
+        int currentYear = new Date().getYear() + 1900;
+        if (wine.getProductionYear() > currentYear || wine.getProductionYear() < 0) {
+            throw new YearNotValidException("Wine production year is not valid!");
         }
         Wine wineEntity1 = wineEntity.get();
         wineEntity1.setName(wine.getName());

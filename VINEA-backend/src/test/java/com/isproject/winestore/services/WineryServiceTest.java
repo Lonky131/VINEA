@@ -6,6 +6,8 @@ import com.isproject.winestore.dto.wine.WineDTO;
 import com.isproject.winestore.dto.wineries.AddWineryDTO;
 import com.isproject.winestore.dto.wineries.PutWineryDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
+import com.isproject.winestore.exceptions.NameAlreadyExistsException;
+import com.isproject.winestore.exceptions.YearNotValidException;
 import com.isproject.winestore.models.*;
 import com.isproject.winestore.repos.RegionRepoJPA;
 import com.isproject.winestore.repos.WineRepoJPA;
@@ -135,6 +137,13 @@ public class WineryServiceTest {
     }
 
     @Test
+    public void addWineryNameExisting() {
+        AddWineryDTO addWineryDTO = new AddWineryDTO(wines.get(0).getName(), 1987, 100);
+        given(regionRepoJPA.findById(addWineryDTO.getRegionId())).willThrow(NameAlreadyExistsException.class);
+        assertThrows(NameAlreadyExistsException.class, () -> wineryService.addWinery(addWineryDTO));
+    }
+
+    @Test
     public void deleteWinery() {
         given(wineryRepoJPA.findById(1L)).willReturn(Optional.ofNullable(wineries.get(0)));
         assertThat(wineryService.deleteWinery(1L)).isTrue();
@@ -163,6 +172,13 @@ public class WineryServiceTest {
         PutWineryDTO putWineryDTO = new PutWineryDTO(100,"dobra vinarija", 1988, 1);
         given(wineryRepoJPA.findById(putWineryDTO.getId())).willThrow(IdNotExistingException.class);
         assertThrows(IdNotExistingException.class, () -> wineryService.updateWinery(putWineryDTO.getId(), putWineryDTO));
+    }
+
+    @Test
+    public void updateWineryInvalidYear() {
+        PutWineryDTO putWineryDTO = new PutWineryDTO(100,"dobra vinarija", 2500, 1);
+        given(wineryRepoJPA.findById(putWineryDTO.getId())).willThrow(YearNotValidException.class);
+        assertThrows(YearNotValidException.class, () -> wineryService.updateWinery(putWineryDTO.getId(), putWineryDTO));
     }
 
     @Test

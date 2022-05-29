@@ -130,14 +130,15 @@ public class Wine {
     }
 
     public void deleteWineCategory(long categoryId) {
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < categories.size(); i++) {
             if (categories.get(i).getCategory().getId() == categoryId) {
                 index = i;
                 break;
             }
         }
-        categories.remove(index);
+        if (index != -1)
+            categories.remove(index);
     }
 
 

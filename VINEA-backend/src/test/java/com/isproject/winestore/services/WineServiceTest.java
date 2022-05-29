@@ -3,6 +3,7 @@ package com.isproject.winestore.services;
 
 import com.isproject.winestore.dto.wine.*;
 import com.isproject.winestore.exceptions.IdNotExistingException;
+import com.isproject.winestore.exceptions.YearNotValidException;
 import com.isproject.winestore.models.*;
 import com.isproject.winestore.repos.CategoryRepoJPA;
 import com.isproject.winestore.repos.WineCategoryRepoJPA;
@@ -148,6 +149,8 @@ public class WineServiceTest {
         );
     }
 
+
+
     @Test
     public void addWineNoCategoryFail() {
         List<AddWineCategoryDTO> categoryDTOS = Arrays.asList(addWineCategoryDTOS.get(0),
@@ -174,6 +177,17 @@ public class WineServiceTest {
                 "05/18/17/22/leaves-7205773__480.jpg", 1, categoryDTOS);
         given(wineryRepoJPA.findById(addWineDTO.getWineryId())).willThrow(IdNotExistingException.class);
         assertThrows(IdNotExistingException.class, () -> wineService.addWine(addWineDTO));
+    }
+
+    @Test
+    public void addWineInvalidYear() {
+        List<AddWineCategoryDTO> categoryDTOS = Arrays.asList(addWineCategoryDTOS.get(0),
+                addWineCategoryDTOS.get(1));
+        AddWineDTO addWineDTO = new AddWineDTO("dost dobro vino", 3000, 15.5,
+                1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
+                "05/18/17/22/leaves-7205773__480.jpg", 1, categoryDTOS);
+        given(wineryRepoJPA.findById(addWineDTO.getWineryId())).willThrow(YearNotValidException.class);
+        assertThrows(YearNotValidException.class, () -> wineService.addWine(addWineDTO));
     }
 
     @Test

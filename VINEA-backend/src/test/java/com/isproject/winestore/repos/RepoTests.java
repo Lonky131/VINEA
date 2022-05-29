@@ -1,6 +1,6 @@
 package com.isproject.winestore.repos;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isproject.winestore.TestContainer;
 import com.isproject.winestore.dto.wine.AddWineCategoryDTO;
 import com.isproject.winestore.dto.wine.WineCategoryDTO;
 import com.isproject.winestore.dto.wine.WineDTO;
@@ -10,25 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Testcontainers
-@ActiveProfiles("test")
-public class RepoTests {
+public class RepoTests extends TestContainer {
 
     @Autowired
     private WineRepoJPA wineRepoJPA;
@@ -44,9 +36,6 @@ public class RepoTests {
 
     @Autowired
     private RegionRepoJPA regionRepoJPA;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     List<Region> regions;
     List<Wine> wines;
@@ -138,7 +127,44 @@ public class RepoTests {
     @Test
     public void wineFindById() {
         Optional<Wine> wine = wineRepoJPA.findById(wines.get(0).getId());
-        assertTha
+        assertThat(wine).isNotEmpty();
+    }
+
+    @Test
+    public void wineFindByName() {
+        Optional<Wine> wine = wineRepoJPA.findByName(wines.get(1).getName());
+        assertThat(wine).isNotEmpty();
+        assertThat(wine.get().getName()).isEqualTo(wines.get(1).getName());
+        assertThat(wine.get().getAlcoholPercentage()).isEqualTo(wines.get(1).getAlcoholPercentage());
+    }
+
+    @Test
+    public void wineryFindByName() {
+        Optional<Winery> winery = wineryRepoJPA.findByName(wineries.get(2).getName());
+        assertThat(winery).isNotEmpty();
+        assertThat(winery.get().getName()).isEqualTo(wineries.get(2).getName());
+        assertThat(winery.get().getFoundingYear()).isEqualTo(wineries.get(2).getFoundingYear());
+    }
+
+    @Test
+    public void wineCategoryFindByWineAndCategory() {
+        Optional<WineCategory> wineCategory = wineCategoryRepoJPA
+                .findByCategoryAndWine(wineCategories.get(0).getCategory(), wineCategories.get(0).getWine());
+        assertThat(wineCategory.get().getValue()).isEqualTo(wineCategories.get(0).getValue());
+        assertThat(wineCategory.get().getCategory().getName()).isEqualTo(wineCategories.get(0).getCategory().getName());
+        assertThat(wineCategory.get().getWine().getName()).isEqualTo(wineCategories.get(0).getWine().getName());
+    }
+
+    @Test
+    public void wineDeleteByWinery() {
+        wineRepoJPA.deleteAllByWinery(wineries.get(1));
+        assertThat(wineRepoJPA.findAll().size()).isEqualTo(4);
+    }
+
+    @Test
+    public void wineCategoryFindByWine() {
+        List<WineCategory> wineCategory = wineCategoryRepoJPA.findByWine(wines.get(0));
+        assertThat(wineCategory.size()).isEqualTo(2);
     }
 
 
