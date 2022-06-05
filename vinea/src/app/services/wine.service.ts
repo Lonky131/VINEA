@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { wine } from '../classes/wine'
 import { wineCategory } from '../classes/wine-category';
 import { category } from '../classes/category';
-import { buyForm } from '../classes/buyForm';
+import { buyForm, orderForm } from '../classes/buyForm';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +52,7 @@ export class WineService {
       return this.http.delete(`api/wine-category/${id}?${urlSearchParams.toString()}`);
     }
 
-    buyWine(buyForm: buyForm){
-      return this.http.post(`http:localhost:8080/engine-rest/process-definition/key/AgeCheck/start`, buyForm);
+    buyWine(orderForm: orderForm){
+      return this.http.post(`http://localhost:8080/engine-rest/process-definition/key/AgeCheck/start`, orderForm);
     }
 }

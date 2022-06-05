@@ -16,7 +16,7 @@ import {DialogAddCategory} from '../../dialogs/dialogAddCategory/dialogAddCatego
 import { category } from '../../classes/category';
 import { DialogEditWine } from '../../dialogs/dialogEditWine/dialogEditWine';
 import {cloneDeep} from 'lodash';
-import { buyForm } from 'src/app/classes/buyForm';
+import { buyForm, orderForm } from 'src/app/classes/buyForm';
 import { DialogBuyWine } from 'src/app/dialogs/dialogBuyWine/dialogBuyWine';
 
 
@@ -33,6 +33,7 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
   public newCategoryValue : string;
   public selectedCategory : string;
   public buyForm : buyForm = new buyForm;
+  public orderForm : orderForm = new orderForm;
 
   displayedColumns: string[] = ['id', 'categoryId', 'categoryName', 'value', 'actions'];
   dataSource: MatTableDataSource<wineCategory>;
@@ -140,8 +141,48 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result !== undefined){
-        result.buyForm.wineId = this.wine.id;
-        this.wineService.buyWine(result.buyForm).subscribe();
+        let orderFormObject = new orderForm;
+
+        Object.assign(orderFormObject, {variables: {
+          wineId : {
+            value: this.wine.id,
+            type: "Long"
+          },
+          firstName : {
+            value: result.buyForm.firstName,
+            type: "String"
+          },
+          lastName : {
+            value: result.buyForm.lastName,
+            type: "String"
+          },
+          email : {
+            value: result.buyForm.email,
+            type: "String"
+          },
+          phoneNumber : {
+            value: result.buyForm.phoneNumber,
+            type: "String"
+          },
+          address : {
+            value: result.buyForm.address,
+            type: "String"
+          },
+          count : {
+            value: result.buyForm.count,
+            type: "Long"
+          },
+          IBAN : {
+            value: result.buyForm.IBAN,
+            type: "String"
+          },
+          idCardNumber : {
+            value: result.buyForm.idCardNumber,
+            type: "String"
+          },
+
+        }});
+        this.wineService.buyWine(orderFormObject).subscribe();
       }
     })
 

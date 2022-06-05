@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddWinery } from 'src/app/dialogs/addWinery/dialogAddWinery';
 import { order } from 'src/app/classes/order';
 import { OrderService } from 'src/app/services/order.service';
+import { tableTask, task } from 'src/app/classes/task';
 
 
 const DUMMY_DATA: order[] = [
@@ -24,10 +25,11 @@ const DUMMY_DATA: order[] = [
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'address', 'status', 'actions'];
-  //dataSource: MatTableDataSource<winery>;
+  displayedColumns: string[] = ['taskId','firstName', 'lastName', 'idCardNumber', 'actions'];
+  dataSource: MatTableDataSource<tableTask>;
+  public taskArray = new Array<tableTask>();
 
-  dataSource : MatTableDataSource<order>;
+  //dataSource : MatTableDataSource<order>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -36,12 +38,28 @@ export class AdminComponent implements OnInit, AfterViewInit {
     private orderService: OrderService,
     public dialog: MatDialog
   ) {
-    // this.wineriesService.getAllWineries().subscribe((res)=>{
-    //   this.dataSource = new MatTableDataSource(res);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // });
-    this.dataSource = new MatTableDataSource(DUMMY_DATA);
+    this.orderService.getAllTasks().subscribe((res)=>{
+
+      for (let i = 0; i < res.length; i++) {
+        let currentTask : tableTask = new tableTask;
+        Object.assign(currentTask, {taskId : res[i].id.toString()});
+        this.orderService.getTaskFirstname(res[i].id.toString()).subscribe(result => {
+          Object.assign(currentTask, {firstName : result.value});
+        });
+        this.orderService.getTaskLastname(res[i].id.toString()).subscribe(result => {
+          Object.assign(currentTask, {lastName : result.value});
+        });
+        this.orderService.getTaskIdCardNumber(res[i].id.toString()).subscribe(result => {
+          Object.assign(currentTask, {idCardNumber : result.value});
+        });
+        this.taskArray.push(currentTask);
+      }
+      console.log(this.taskArray);
+      this.dataSource = new MatTableDataSource(this.taskArray);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+    //this.dataSource = new MatTableDataSource(DUMMY_DATA);
 
   }
 
@@ -63,12 +81,12 @@ export class AdminComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  approveOrder(orderId: number) : void {
-    this.orderService.completeOrder(orderId, "Approved").subscribe();
+  approveOrder(taskId: string) : void {
+    this.orderService.completeOrder(taskId, true).subscribe();
   }
 
-  denyOrder(orderId: number) : void {
-    this.orderService.completeOrder(orderId, "Denied").subscribe();
+  denyOrder(taskId: string) : void {
+    this.orderService.completeOrder(taskId, false).subscribe();
   }
 }
 
