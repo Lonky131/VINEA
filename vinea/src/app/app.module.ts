@@ -38,6 +38,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 //Services
 import { WineService } from './services/wine.service';
+import { AdminComponent } from './components/admin/admin.component';
+import { PeroComponent } from './components/pero/pero.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { WineService } from './services/wine.service';
     DialogAddWine,
     DialogAddWinery,
     DialogEditWine,
-    DialogBuyWine
+    DialogBuyWine,
+    AdminComponent,
+    PeroComponent
   ],
   imports: [
     HttpClientModule,

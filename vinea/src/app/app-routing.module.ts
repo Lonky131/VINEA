@@ -4,6 +4,8 @@ import { NotfoundComponent } from './components/notfound/notfound.component'
 import { WineComponent } from './components/wine/wine.component';
 import { WineriesComponent } from './components/wineries/wineries.component';
 import { WineDetailsComponent } from './components/wine-details/wine-details.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { PeroComponent } from './components/pero/pero.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,14 @@ const routes: Routes = [
     component: WineriesComponent
   }
   ,
+  {
+    path: 'admin',
+    component: AdminComponent
+  },
+  {
+    path: 'pero',
+    component: PeroComponent
+  },
   {
     path: '',
     pathMatch: 'full',
