@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Please fill out the form:</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>First Name:</mat-label>
+    <input matInput [(ngModel)]="data.buyForm.firstName" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Last Name:</mat-label>
+    <input matInput [(ngModel)]="data.buyForm.lastName" type="text">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Email:</mat-label>
+    <input matInput type="text" [(ngModel)]="data.buyForm.email">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Phone Number:</mat-label>
+    <input matInput type="text" [(ngModel)]="data.buyForm.phoneNumber">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Address:</mat-label>
+    <input matInput type="text" [(ngModel)]="data.buyForm.address">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Count:</mat-label>
+    <input matInput [(ngModel)]="data.buyForm.count" type="number">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Card Id:</mat-label>
+    <input matInput [(ngModel)]="data.buyForm.cardId" type="number">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Card Pin:</mat-label>
+    <input matInput [(ngModel)]="data.buyForm.cardPin" type="number">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No</button>
+  <button mat-button (click)="onYesClick()">Confirm</button>
+</div>

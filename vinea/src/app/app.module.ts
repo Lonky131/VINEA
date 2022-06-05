@@ -17,6 +17,7 @@ import { DialogAddCategory } from './dialogs/dialogAddCategory/dialogAddCategory
 import { DialogAddWine } from './dialogs/dialogAddWine/dialogAddWine';
 import { DialogAddWinery } from './dialogs/addWinery/dialogAddWinery';
 import { DialogEditWine } from './dialogs/dialogEditWine/dialogEditWine';
+import { DialogBuyWine } from './dialogs/dialogBuyWine/dialogBuyWine';
 
 
 //Material modules
@@ -49,7 +50,8 @@ import { WineService } from './services/wine.service';
     DialogAddCategory,
     DialogAddWine,
     DialogAddWinery,
-    DialogEditWine
+    DialogEditWine,
+    DialogBuyWine
   ],
   imports: [
     HttpClientModule,

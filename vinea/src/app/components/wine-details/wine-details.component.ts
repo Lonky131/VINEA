@@ -16,6 +16,8 @@ import {DialogAddCategory} from '../../dialogs/dialogAddCategory/dialogAddCatego
 import { category } from '../../classes/category';
 import { DialogEditWine } from '../../dialogs/dialogEditWine/dialogEditWine';
 import {cloneDeep} from 'lodash';
+import { buyForm } from 'src/app/classes/buyForm';
+import { DialogBuyWine } from 'src/app/dialogs/dialogBuyWine/dialogBuyWine';
 
 
 
@@ -30,6 +32,7 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
   public allCategorites : Array<category>;
   public newCategoryValue : string;
   public selectedCategory : string;
+  public buyForm : buyForm = new buyForm;
 
   displayedColumns: string[] = ['id', 'categoryId', 'categoryName', 'value', 'actions'];
   dataSource: MatTableDataSource<wineCategory>;
@@ -126,7 +129,22 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
     })
 
   }
+  buyWineDialog(){
 
+    const dialogRef = this.dialog.open(DialogBuyWine, {
+      width: '600px',
+      data: {
+        buyForm : this.buyForm
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result !== undefined){
+        this.wineService.buyWine(this.wine.id, result.buyForm).subscribe();
+      }
+    })
+
+  }
 
   addCategory() {
     const dialogRef = this.dialog.open(DialogAddCategory, {
