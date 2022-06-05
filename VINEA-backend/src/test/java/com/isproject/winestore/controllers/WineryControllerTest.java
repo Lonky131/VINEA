@@ -1,7 +1,6 @@
 package com.isproject.winestore.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isproject.winestore.dto.wineries.AddWineryDTO;
 import com.isproject.winestore.exceptions.IdNotExistingException;
 import com.isproject.winestore.models.Region;
 import com.isproject.winestore.models.Wine;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -22,7 +20,8 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,57 +113,5 @@ public class WineryControllerTest {
         mvc.perform(get(endpoint + "/6"))
                 .andExpect(status().isBadRequest());
     }
-
-    @Test
-    public void addWinerySuccessfully() throws Exception {
-        AddWineryDTO addWineryDTO = new AddWineryDTO("dobra vinarija", 1987, 0);
-
-        given(wineryService.addWinery(addWineryDTO)).willReturn(wineries.get(2));
-        mvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(addWineryDTO)))
-                .andExpect(status().isCreated());
-    }
-
-//    @Test
-//    public void putWinerySuccess() throws Exception {
-//        PutWineryDTO putWineryDTO = new PutWineryDTO(2,"dobra vinarija", 1988, 0);
-//
-////        given(wineryService.updateWinery(2, putWineryDTO))
-////                .willReturn(wineries.get(3));
-//        var response = mvc.perform(put(endpoint + "/2")
-//                        .content(objectMapper.writeValueAsString(putWineryDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse();
-//        System.out.println(objectMapper.readValue(response.getContentAsByteArray(), Winery.class ));
-//    }
-//
-//    @Test
-//    public void putWineryFailNoWineryId() throws Exception {
-//        PutWineryDTO putWineryDTO = new PutWineryDTO(10,"dobra vinarija", 1988, 0);
-//
-//        given(wineryService.updateWinery(10, putWineryDTO))
-//                .willThrow(new IdNotExistingException("Wine id does not exist!"));
-//        mvc.perform(put(endpoint + "/10")
-//                        .content(objectMapper.writeValueAsString(putWineryDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
-//
-//    @Test
-//    public void putWineryFailNoRegionId() throws Exception {
-//
-//        PutWineryDTO putWineryDTO = new PutWineryDTO(1,"dobra vinarija", 1988, 10);
-//
-//        given(wineryService.updateWinery(1, putWineryDTO))
-//                .willThrow(IdNotExistingException.class);
-//        mvc.perform(put(endpoint + "/1")
-//                        .content(objectMapper.writeValueAsString(putWineryDTO))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest());
-//    }
-
-
 
 }

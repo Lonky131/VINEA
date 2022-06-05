@@ -163,6 +163,8 @@ public class WineCategoryServiceTest {
         WineCategory wineCategory = new WineCategory(categories.get(0), wine, "crno");
         given(wineCategoryRepoJPA.findById(1L))
                 .willReturn(Optional.ofNullable(wineCategory));
+        given(wineRepoJPA.findById(1L))
+                .willReturn(Optional.ofNullable(wine));
         assertDoesNotThrow(() -> wineCategoryService.deleteCategoryFromWine(1L, 1L));
     }
 

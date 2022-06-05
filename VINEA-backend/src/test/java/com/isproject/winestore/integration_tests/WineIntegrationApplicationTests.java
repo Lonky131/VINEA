@@ -174,7 +174,7 @@ class WinestoreIntegrationApplicationTests extends TestContainer {
 
 	@Test
 	public void addWine() throws Exception {
-		AddWineDTO addWineDTO = new AddWineDTO("dost dobro vino", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
+		AddWineDTO addWineDTO = new AddWineDTO("novo ime vina", 2015, 15.5, 1000, 75.99, "https://cdn.pixabay.com/photo/2022/" +
 				"05/18/17/22/leaves-7205773__480.jpg", wineries.get(0).getId(), new ArrayList<AddWineCategoryDTO>());
 		mockMvc.perform(post(wineEndpoint)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -247,7 +247,7 @@ class WinestoreIntegrationApplicationTests extends TestContainer {
 
 	@Test
 	public void addWinery() throws Exception {
-		AddWineryDTO addWineryDTO = new AddWineryDTO("dobra vinarija", 1987, regions.get(0).getId());
+		AddWineryDTO addWineryDTO = new AddWineryDTO("novo ime vinarije", 1987, regions.get(0).getId());
 		mockMvc.perform(post(wineryEndpoint)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(addWineryDTO)))
