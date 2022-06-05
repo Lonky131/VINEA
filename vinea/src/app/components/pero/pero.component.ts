@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddWinery } from 'src/app/dialogs/addWinery/dialogAddWinery';
 import { order } from 'src/app/classes/order';
 import { OrderService } from 'src/app/services/order.service';
+import { task, userTableTask } from 'src/app/classes/task';
 
 
 const DUMMY_DATA: order[] = [
@@ -21,10 +22,11 @@ const DUMMY_DATA: order[] = [
   styleUrls: ['./pero.component.scss']
 })
 export class PeroComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'address', 'status'];
-  //dataSource: MatTableDataSource<winery>;
+  displayedColumns: string[] = ['taskId', 'firstName', 'lastName', 'status', 'actions'];
+  public taskArray = new Array<userTableTask>();
 
-  dataSource : MatTableDataSource<order>;
+
+  dataSource : MatTableDataSource<userTableTask>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -33,13 +35,52 @@ export class PeroComponent implements OnInit, AfterViewInit {
     private orderService: OrderService,
     public dialog: MatDialog
   ) {
-    // this.wineriesService.getAllWineries().subscribe((res)=>{
-    //   this.dataSource = new MatTableDataSource(res);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // });
-    this.dataSource = new MatTableDataSource(DUMMY_DATA);
+    this.orderService.getAllNotificationsPositive().subscribe((res)=>{
+      if(res.length > 0) {
+        console.log(res);
+        for (let i = 0; i < res.length; i++) {
+          let currentTask : userTableTask = new userTableTask;
+          Object.assign(currentTask, {taskId : res[i].id.toString()});
+          this.orderService.getTaskFirstname(res[i].id.toString()).subscribe(result => {
+            Object.assign(currentTask, {firstName : result.value});
+          });
+          this.orderService.getTaskLastname(res[i].id.toString()).subscribe(result => {
+            Object.assign(currentTask, {lastName : result.value});
+          });
+          Object.assign(currentTask, {status : "Approved"});
+          console.log(currentTask);
+          this.taskArray.push(currentTask);
+        }
+        console.log(this.taskArray);
+        this.dataSource = new MatTableDataSource(this.taskArray);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
 
+      } else {
+        this.orderService.getAllNotificationsNegative().subscribe((res)=>{
+          if(res.length > 0) {
+            console.log(res);
+            for (let i = 0; i < res.length; i++) {
+              let currentTask : userTableTask = new userTableTask;
+              Object.assign(currentTask, {taskId : res[i].id.toString()});
+              this.orderService.getTaskFirstname(res[i].id.toString()).subscribe(result => {
+                Object.assign(currentTask, {firstName : result.value});
+              });
+              this.orderService.getTaskLastname(res[i].id.toString()).subscribe(result => {
+                Object.assign(currentTask, {lastName : result.value});
+              });
+              Object.assign(currentTask, {status : "Denied"});
+              this.taskArray.push(currentTask);
+            }
+          }
+          console.log(this.taskArray);
+          this.dataSource = new MatTableDataSource(this.taskArray);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -59,6 +100,11 @@ export class PeroComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+
+  approveNotification(taskId : string) : void {
+    this.orderService.completeNotification(taskId).subscribe();
   }
 }
 

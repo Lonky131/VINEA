@@ -21,6 +21,13 @@ export class OrderService {
       return this.http.get<any[]>("http://localhost:8080/engine-rest/task?processDefinitionKey=AgeCheck&name=Check user ID card for age", {responseType : 'json'});
     }
 
+    getAllNotificationsPositive() {
+      return this.http.get<any[]>("http://localhost:8080/engine-rest/task?processDefinitionKey=AgeCheck&name=Notify user about success",{responseType : 'json'});
+    }
+    getAllNotificationsNegative() {
+      return this.http.get<any[]>("http://localhost:8080/engine-rest/task?processDefinitionKey=AgeCheck&name=Notify user about age limit",{responseType : 'json'});
+    }
+
     getTaskFirstname(id: string){
       return this.http.get<any>(`http://localhost:8080/engine-rest/task/${id}/variables/firstName`);
     }
@@ -32,16 +39,15 @@ export class OrderService {
       return this.http.get<any>(`http://localhost:8080/engine-rest/task/${id}/variables/idCardNumber`);
     }
 
-
-    getAllOrdersByIdNumber(idNumber: string) : Observable<order[]> {
-      return this.http.get<order[]>(`/api/order/${idNumber}`, {responseType : 'json'});
-    }
-
     completeOrder(taskId : string, status : boolean) {
       return this.http.post(`http://localhost:8080/engine-rest/task/${taskId}/complete`, {variables: {
         UserOldEnough: {
           value: status
         }
       }});
+    }
+
+    completeNotification(taskId: string) {
+      return this.http.post(`http://localhost:8080/engine-rest/task/${taskId}/complete`, {});
     }
 }

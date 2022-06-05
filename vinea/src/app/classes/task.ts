@@ -29,3 +29,10 @@ export class tableTask {
   lastName : string;
   idCardNumber : string;
 }
+
+export class userTableTask {
+  taskId : string;
+  firstName : string;
+  lastName : string;
+  status : string;
+}
