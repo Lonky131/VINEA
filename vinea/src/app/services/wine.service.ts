@@ -52,7 +52,7 @@ export class WineService {
       return this.http.delete(`api/wine-category/${id}?${urlSearchParams.toString()}`);
     }
 
-    buyWine(id: number, buyForm: buyForm){
-      return this.http.post(`/api/wine/buy/${id}`, buyForm);
+    buyWine(buyForm: buyForm){
+      return this.http.post(`http:localhost:8080/engine-rest/process-definition/key/AgeCheck/start`, buyForm);
     }
 }

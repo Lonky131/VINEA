@@ -140,7 +140,8 @@ export class WineDetailsComponent implements OnInit, AfterViewInit, OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result !== undefined){
-        this.wineService.buyWine(this.wine.id, result.buyForm).subscribe();
+        result.buyForm.wineId = this.wine.id;
+        this.wineService.buyWine(result.buyForm).subscribe();
       }
     })
 

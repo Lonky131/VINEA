@@ -60,13 +60,6 @@ export class PeroComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  approveOrder(orderId: number) : void {
-    this.orderService.changeOrderStatus(orderId, "Approved").subscribe();
-  }
-
-  denyOrder(orderId: number) : void {
-    this.orderService.changeOrderStatus(orderId, "Denied").subscribe();
-  }
 }
 
 

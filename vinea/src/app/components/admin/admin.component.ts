@@ -64,11 +64,11 @@ export class AdminComponent implements OnInit, AfterViewInit {
     }
   }
   approveOrder(orderId: number) : void {
-    this.orderService.changeOrderStatus(orderId, "Approved").subscribe();
+    this.orderService.completeOrder(orderId, "Approved").subscribe();
   }
 
   denyOrder(orderId: number) : void {
-    this.orderService.changeOrderStatus(orderId, "Denied").subscribe();
+    this.orderService.completeOrder(orderId, "Denied").subscribe();
   }
 }
 

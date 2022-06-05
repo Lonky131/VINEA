@@ -12,15 +12,23 @@ export class OrderService {
     private http: HttpClient
   ) { }
 
-    getAllOrders(): Observable<order[]> {
-      return this.http.get<order[]>("/api/order", {responseType : 'json'});
+    // getAllOrders(): Observable<order[]> {
+    //   return this.http.get<order[]>("/api/order", {responseType : 'json'});
+    // }
+
+    getAllOrders(): any{
+      return this.http.get<any[]>("http:localhost:8080/engine-rest/task?processDefinitionKey=AgeCheck", {responseType : 'json'});
     }
 
     getAllOrdersByIdNumber(idNumber: string) : Observable<order[]> {
       return this.http.get<order[]>(`/api/order/${idNumber}`, {responseType : 'json'});
     }
 
-    changeOrderStatus(orderId : number, status: string) {
-      return this.http.put(`/api/order/${orderId})`, {status});
+    completeOrder(taskId : number, status: string) {
+      return this.http.put(`http:localhost:8080/engine-rest/task/${taskId}/complete`, {variables: {
+        orderStatus: {
+          value: status
+        }
+      }});
     }
 }
